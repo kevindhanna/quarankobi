@@ -35,22 +35,26 @@ class Db
       add_ip(ip)
     end
 
-    results = @client.query("SELECT day, completed FROM days WHERE ip='#{ip}'")
+    results = @client.query("SELECT day, reached, completed FROM days WHERE ip='#{ip}'")
     results.each do |r|
-      return [r['day'].to_i, r['completed']]
+      return [r['day'], r['reached'], (r['completed'] == 1)]
     end
   end
 
   def next_day(ip)
     date = DateTime.now
-    @client.query("UPDATE days SET day=day+1, completed='#{date}' WHERE ip = '#{ip}'")
+    @client.query("UPDATE days SET day=day+1, completed=false, reached='#{date}' WHERE ip = '#{ip}'")
+  end
+
+  def complete(ip, day)
+    @client.query("UPDATE days SET completed=true WHERE ip='#{ip}' AND day=#{day}")
   end
 
   private
 
   def add_ip(ip)
     date = DateTime.now
-    @client.query("INSERT INTO days (ip, day, completed) VALUES ('#{ip}', 1, '#{date}')")
+    @client.query("INSERT INTO days (ip, day, completed, reached) VALUES ('#{ip}', 1, false, '#{date}')")
   end
 
   def has_day(ip)
