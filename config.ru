@@ -1,0 +1,3 @@
+require "./quarankobi"
+
+run Base
