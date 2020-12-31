@@ -10,7 +10,12 @@ class Base < Sinatra::Base
                    layout_options: {views: 'views/layouts'}
   end
 
-  get '/' do
+  get '/day_1' do
     haml :day_1
+  end
+
+  get '/day_2' do
+    score = params['score'].to_i || nil
+    haml :day_2, locals: {score: score}
   end
 end

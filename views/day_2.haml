@@ -6,27 +6,55 @@
     background-image: url("https://www.iamexpat.nl/sites/default/files/styles/ogimage_thumb/public/expat-management-travel-restrictions.jpg");
   }
   .contents {
-    color: white;
+    color: darkblue;
     font-family: "arial";
     text-align: center;
     padding-top: 10%
   }
   h1 {
     font-size: 4em;
-    text-shadow:2px 2px 8px #FF0000;
+    text-shadow:2px 2px 8px white;
   }
   h2 {
     font-size: 2em;
-    text-shadow:2px 2px 8px #FF0000;
+    text-shadow:2px 2px 8px white;
   }
   .container {
     font-size: 5em;
   }
-
+  .hint {
+    font-size: 3em;
+    backdrop-filter: blur(20px);
+  }
 %body.tiled-image
   %div.contents
-    %h1
-      Nice job patient person!
-    %br
     %h2
-      the next
+      Bored in your room already?
+      %br
+      Why not explore some beautiful...ish… parts of the world.
+      %br
+      %br
+      %br
+      %a.link{ :href => "https://www.geoguessr.com/maps/5fede38b0f95370001fb9ce0/play" }
+        %h2 Fun Game!
+
+    %h2
+      When you’re done - enter your high score.
+      %br
+      You have to reach a very smarty pants threshold to pass.
+      %br
+    %div
+      <form action="/day_2" method="GET">
+      <input name="score" type="text"/>
+      %br
+      %br
+      <input type="submit">
+      </form>
+
+    - if score >= 15000
+      %h2
+        CONGRATULATIONS
+        %br
+        %br
+        %div.hint
+          🎈🎈🎈🎉  🎈🎈🎉  🎈
