@@ -29,6 +29,7 @@ DEPENDENCIES
   dotenv
   haml
   puma
+  rack
   sinatra
 
 BUNDLED WITH
