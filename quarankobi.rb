@@ -1,3 +1,4 @@
+require 'mysql2'
 require 'sinatra'
 
 class Base < Sinatra::Base
@@ -10,6 +11,6 @@ class Base < Sinatra::Base
   end
 
   get '/' do
-    haml :index
+    haml :day_1
   end
 end

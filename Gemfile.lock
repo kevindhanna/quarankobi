@@ -7,6 +7,7 @@ GEM
       tilt
     mustermann (1.1.1)
       ruby2_keywords (~> 0.0.1)
+    mysql2 (0.5.3)
     nio4r (2.5.4)
     puma (5.1.1)
       nio4r (~> 2.0)
@@ -28,6 +29,7 @@ PLATFORMS
 DEPENDENCIES
   dotenv
   haml
+  mysql2
   puma
   rack
   sinatra
