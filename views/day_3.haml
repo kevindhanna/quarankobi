@@ -1,0 +1,58 @@
+:css
+  body {
+    background: black
+  }
+  .tiled-image {
+    background: url("https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fi.huffpost.com%2Fgen%2F2646136%2Fimages%2Fo-BORED-WORKING-facebook.jpg&f=1&nofb=1");
+    background-size: 50%;
+  }
+  .contents {
+    color: red;
+    font-family: "arial";
+    text-align: center;
+    padding-top: 10%;
+    backdrop-filter: blur(20px);
+  }
+  h1 {
+    font-size: 6em;
+    text-shadow:2px 2px 8px white;
+  }
+  h2 {
+    font-size: 4em;
+    text-shadow:2px 2px 8px white;
+  }
+  .container {
+    font-size: 5em;
+  }
+  .hint {
+    font-size: 10em;
+    text-shadow:2px 2px 8px black;
+    color: red
+  }
+
+%body.tiled-image
+  %div.contents
+    - if count == 1
+      %h2
+        This challenge today will require you to be very bored.
+        %br
+        %br
+        No really, really bored.
+    - if count == 2 || count == 3
+      %h2
+        Sorry. You’re not quite bored enough.
+    - if count == 4
+      %h2
+        Still not quite bored enough.
+    - if count == 5
+      %h2
+        Bored enough? Maybe. Check back soon.
+    - if count == 6 || count == 7 || count == 8
+      %h2
+        Keep refreshing, you’ll get used to it.
+    - if count == 9
+      %h2
+        Yeah I think you’re just about bored enough...
+    - if count > 9
+      %div.hint
+        #{message[count % message.length()]}

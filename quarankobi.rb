@@ -1,5 +1,7 @@
-require 'mysql2'
 require 'sinatra'
+require_relative './helpers/db'
+
+DB = Db.new
 
 class Base < Sinatra::Base
   configure :production, :development do
@@ -17,5 +19,13 @@ class Base < Sinatra::Base
   get '/day_2' do
     score = params['score'].to_i || nil
     haml :day_2, locals: {score: score}
+  end
+
+  get '/day_3' do
+    DB.visit(request.ip)
+    count = DB.visits(request.ip)
+
+    message = "-.-./-.../...-/.-/--./-.--/.-./..-./..-.!".split("")
+    haml :day_3, locals: {count: count, message: message}
   end
 end
