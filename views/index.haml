@@ -1,6 +1,11 @@
 :css
   body {
+    background: black
+  }
+  .tiled-image {
     background-image: url("https://datingasociopath.files.wordpress.com/2013/05/isolation.png");
+  }
+  .contents {
     color: white;
     font-family: "arial";
     text-align: center;
@@ -8,18 +13,43 @@
   }
   h1 {
     font-size: 4em;
-    text-shadow: 1px 1px 2px black
+    text-shadow:2px 2px 8px #FF0000;
   }
   h2 {
-    font-size: 2em
-    text-shadow: 1px 1px 2px black
+    font-size: 2em;
+    text-shadow:2px 2px 8px #FF0000;
+  }
+  .container {
+    font-size: 5em;
   }
 
-.body
-  %h1
-    You made it!
-  %br
-  %h2
-    Not only to the country, but through our MyStErIoUs PuZzLe too!
+%body.tiled-image
+  %div.contents
+    %h1
+      You made it!
     %br
-    Check back later for the next hint...
+    %h2
+      Not only to the country, but through our
+      %br
+    %div.container
+      <span style="color:#FF0000">M</span>
+      <span style="color:#66CC66">y</span>
+      <span style="color:#FF9966">S</span>
+      <span style="color:#FFCCCC">t</span>
+      <span style="color:#FF0066">E</span>
+      <span style="color:#FF0000">r</span>
+      <span style="color:#66CC66">I</span>
+      <span style="color:#FF9966">o</span>
+      <span style="color:#FFCCCC">U</span>
+      <span style="color:#FF0066">s</span>
+      %br
+      <span style="color:#FF0000">P</span>
+      <span style="color:#66CC66">u</span>
+      <span style="color:#FF9966">Z</span>
+      <span style="color:#FFCCCC">z</span>
+      <span style="color:#FF0066">L</span>
+      <span style="color:#FF0000">e</span>
+    %h2
+      too!
+      %br
+      Check back later for the next hint...
