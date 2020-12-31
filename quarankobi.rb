@@ -1,4 +1,6 @@
+require 'date'
 require 'sinatra'
+require 'time_difference'
 require_relative './helpers/db'
 
 DB = Db.new
@@ -18,7 +20,16 @@ class Base < Sinatra::Base
   end
 
   get '/' do
-    day = DB.day(request.ip)
+    day, completed = DB.day(request.ip)
+    now = DateTime.now
+
+    # if we've been on the current day for most of a day, we go up a day
+    difference = TimeDifference.between(now, completed).in_seconds
+    if difference > 16 && day != 3
+      DB.next_day(request.ip)
+      redirect '/'
+    end
+
     redirect "day_#{day}"
   end
 
@@ -27,7 +38,8 @@ class Base < Sinatra::Base
   end
 
   get '/day_2' do
-    day = DB.day(request.ip)
+    day, completed = DB.day(request.ip)
+
     if day < 2
       redirect '/'
     end
@@ -37,13 +49,17 @@ class Base < Sinatra::Base
   end
 
   get '/day_3' do
-    day = DB.day(request.ip)
+    day, completed = DB.day(request.ip)
+
     if day < 3
       redirect '/'
     end
 
+    # increment the visit counter
     DB.visit(request.ip)
+    # get total visits
     count = DB.visits(request.ip)
+    puts count
     message = "-.-./-.../...-/.-/--./-.--/.-./..-./..-.!".split("")
     haml :day_3, locals: {count: count, message: message}
   end

@@ -1,3 +1,4 @@
+require 'date'
 require 'mysql2'
 
 class Db
@@ -16,6 +17,7 @@ class Db
 
   def visits(ip)
     results = @client.query("SELECT count FROM visits WHERE ip='#{ip}'")
+    puts "SELECT count FROM visits WHERE ip='#{ip}'"
     results.each do |r|
       return r['count'].to_i
     end
@@ -23,39 +25,36 @@ class Db
 
   def visit(ip)
     if !has_visited(ip)
-      add_ip(ip)
+      @client.query("INSERT INTO visits (ip, count) VALUES ('#{ip}', 0)")
     end
-
     @client.query("UPDATE visits SET count=count+1 WHERE ip='#{ip}'")
   end
 
   def day(ip)
     if !has_day(ip)
-      add_day(ip)
+      add_ip(ip)
     end
 
-    results = @client.query("SELECT day FROM days WHERE ip='#{ip}'")
+    results = @client.query("SELECT day, completed FROM days WHERE ip='#{ip}'")
     results.each do |r|
-      return r['day'].to_i
+      return [r['day'].to_i, r['completed']]
     end
   end
 
   def next_day(ip)
-    @client.query("UPDATE days SET day=day+1 WHERE ip = '#{ip}'")
+    date = DateTime.now
+    @client.query("UPDATE days SET day=day+1, completed='#{date}' WHERE ip = '#{ip}'")
   end
 
   private
 
   def add_ip(ip)
-    @client.query("INSERT INTO visits (ip, count) VALUES ('#{ip}', 0)")
+    date = DateTime.now
+    @client.query("INSERT INTO days (ip, day, completed) VALUES ('#{ip}', 1, '#{date}')")
   end
 
-  def add_day(ip)
-    @client.query("INSERT INTO days (ip, day) VALUES ('#{ip}', 1)")
-  end
-
-  def has_visited(ip)
-    result = @client.query("SELECT ip FROM visits WHERE ip = '#{ip}'")
+  def has_day(ip)
+    result = @client.query("SELECT ip FROM days WHERE ip = '#{ip}'")
     result.each do |r|
       return true if r['ip'] == ip
     end
@@ -63,8 +62,8 @@ class Db
     false
   end
 
-  def has_day(ip)
-    result = @client.query("SELECT ip FROM days WHERE ip = '#{ip}'")
+  def has_visited(ip)
+    result = @client.query("SELECT ip FROM visits WHERE ip = '#{ip}'")
     result.each do |r|
       return true if r['ip'] == ip
     end
