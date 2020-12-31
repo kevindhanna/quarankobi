@@ -29,6 +29,9 @@
     text-shadow:2px 2px 8px black;
     color: red
   }
+  .link_back{
+    color: yellow
+  }
 
 %body.tiled-image
   %div.contents
@@ -56,3 +59,7 @@
     - if count > 9
       %div.hint
         #{message[count % message.length()]}
+    %a.link_back{ :href => "/day_1" }
+      %h3 Day 1
+    %a.link_back{ :href => "/day_2" }
+      %h3 Day 2

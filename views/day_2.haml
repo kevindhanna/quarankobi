@@ -9,7 +9,7 @@
     color: darkblue;
     font-family: "arial";
     text-align: center;
-    padding-top: 10%;
+    padding-top: 5vh;
     backdrop-filter: blur(20px);
   }
   h1 {
@@ -26,6 +26,9 @@
   .hint {
     font-size: 3em;
   }
+  .link_back{
+    color: yellow
+  }
 
 %body.tiled-image
   %div.contents
@@ -36,21 +39,8 @@
       %br
       %br
       %br
-      %a.link{ :href => "https://www.geoguessr.com/maps/5fede38b0f95370001fb9ce0/play" }
+      %a{ :href => "https://www.geoguessr.com/maps/5fede38b0f95370001fb9ce0/play" }
         %h2 Fun Game!
-
-    %h2
-      When you’re done - enter your high score.
-      %br
-      You have to reach a very smarty pants threshold to pass.
-      %br
-    %div
-      <form action="/day_2" method="GET">
-      <input name="score" type="text"/>
-      %br
-      %br
-      <input type="submit">
-      </form>
 
     - if score >= 15000
       %h2
@@ -59,3 +49,20 @@
         %br
         %div.hint
           🎈🎈🎈🎉  🎈🎈🎉  🎈
+    - else
+      %h2
+        When you’re done - enter your high score.
+        %br
+        You have to reach a very smarty pants threshold to pass.
+        %br
+      %div
+        <form action="/day_2" method="GET">
+        <input name="score" type="text"/>
+        %br
+        %br
+        <input type="submit">
+        </form>
+        - if score > 0 && score < 15000
+          %h2 Try again!
+    %a.link_back{ :href => "/day_1" }
+      %h3 Day 1
