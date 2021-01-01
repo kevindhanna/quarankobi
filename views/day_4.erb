@@ -1,0 +1,104 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>The HTML5 Herald</title>
+  <meta name="description" content="The HTML5 Herald">
+  <meta name="author" content="SitePoint">
+  <style>
+    body {
+        background: url("https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse2.mm.bing.net%2Fth%3Fid%3DOIP.OQpDvGpr5uo0XB3z4n0EMgHaEK%26pid%3DApi&f=1");
+        background-size: 100%
+    }
+    .image {
+        position: absolute;
+        z-index: 9;
+        text-align: center;
+        cursor: move;
+        border-style: solid;
+        scale: 65%
+    }
+    .back_links {
+        font-size: 2em;
+        margin-top: 60vh;
+    }
+    .home_link {
+        width: 10vw;
+
+    }
+    .help {
+        background-color: yellow
+    }
+  </style>
+</head>
+
+<body>
+  <a href="/">
+    <img class="home_link" src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.geopoll.com%2Fwp-content%2Fuploads%2F2017%2F12%2Fcartoon-house.png&f=1&nofb=1">
+  </a>
+  <img id="1" class="image" src="1.png" style="top: 8px; left: -12px;"/>
+  <img id="2" class="image" src="2.png" style="top: -50px; left: 345px;"/>
+  <img id="3" class="image" src="3.png" style="top: 223px; left: 794px;"/>
+  <img id="4" class="image" src="4.png" style="top: 259px; left: 310px;"/>
+  <div class="back_links">
+    <a href="/day_1">day_1</a></br>
+    <a href="/day_2">day_2</a></br>
+    <a href="/day_3">day_3</a></br>
+    <a class="help" href="mailto:helpmequarankobi@hotmail.com">help!</a></br>
+  </div>
+  <script>
+    let one = document.getElementById("1")
+    let two = document.getElementById("2")
+    let three = document.getElementById("3")
+    let four = document.getElementById("4")
+
+    dragElement(one);
+    dragElement(two);
+    dragElement(three);
+    dragElement(four);
+
+    function dragElement(elmnt) {
+        var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+        if (document.getElementById(elmnt.id + "header")) {
+            // if present, the header is where you move the DIV from:
+            document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
+        } else {
+            // otherwise, move the DIV from anywhere inside the DIV:
+            elmnt.onmousedown = dragMouseDown;
+        }
+
+        function dragMouseDown(e) {
+            e = e || window.event;
+            e.preventDefault();
+            // get the mouse cursor position at startup:
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            document.onmouseup = closeDragElement;
+            // call a function whenever the cursor moves:
+            document.onmousemove = elementDrag;
+        }
+
+        function elementDrag(e) {
+            e = e || window.event;
+            e.preventDefault();
+            // calculate the new cursor position:
+            pos1 = pos3 - e.clientX;
+            pos2 = pos4 - e.clientY;
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            // set the element's new position:
+            elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+            elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+        }
+
+        function closeDragElement() {
+            // stop moving when mouse button is released:
+            document.onmouseup = null;
+            document.onmousemove = null;
+        }
+    }
+  </script>
+</body>
+</html>

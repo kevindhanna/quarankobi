@@ -31,7 +31,7 @@ class Base < Sinatra::Base
 
     # if we've been on the current day for most of a day, we go up a day
     difference = TimeDifference.between(now, reached).in_seconds
-    if difference > 16 && completed && day != 3
+    if difference > 16 && completed && day != 4
       DB.next_day(request.ip)
       redirect '/'
     end
@@ -45,8 +45,11 @@ class Base < Sinatra::Base
       day_2(score)
     when 3
       day_3(request.ip)
+    when 4
+      DB.complete(request.ip, 4)
+      erb :day_4
     else
-      day_3(request.ip)
+      erb :day_4
     end
   end
 
@@ -55,12 +58,25 @@ class Base < Sinatra::Base
   end
 
   get '/day_2' do
+    day, reached, completed = DB.day(request.ip)
+    redirect '/' if day < 2
+
     score = params['score'].to_i || nil
     day_2(score)
   end
 
   get '/day_3' do
+    day, reached, completed = DB.day(request.ip)
+    redirect '/' if day < 3
+
     day_3(request.ip)
+  end
+
+  get '/day_4' do
+    day, reached, completed = DB.day(request.ip)
+    redirect '/' if day < 4
+
+    erb :day_4
   end
 
   def day_2(score)
