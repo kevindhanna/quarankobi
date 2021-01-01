@@ -17,7 +17,7 @@ class Db
         ip: entry['ip'],
         day: entry['day'],
         completed: (entry['completed'] == 1),
-        reached: DateTime.parse(entry['reached'])
+        reached: entry['reached']
       }
     end
     results
