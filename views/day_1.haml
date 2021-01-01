@@ -9,7 +9,6 @@
     color: white;
     font-family: "arial";
     text-align: center;
-    padding-top: 5vh
   }
   h1 {
     font-size: 4em;
@@ -25,8 +24,15 @@
   .hint {
     font-size: 4em
   }
+  .home_link {
+    width: 10vw;
+    float: left
+  }
 
 %body.tiled-image
+  %a{ :href => "/" }
+    %img.home_link(src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.geopoll.com%2Fwp-content%2Fuploads%2F2017%2F12%2Fcartoon-house.png&f=1&nofb=1")
+    %br
   %div.contents
     %h1
       You made it!
