@@ -10,6 +10,19 @@ class Db
                                  :reconnect => true)
   end
 
+  def day_data
+    results = @client.query("SELECT * from days")
+    results = results.map do |entry|
+      {
+        ip: entry['ip'],
+        day: entry['day'],
+        completed: (entry['completed'] == 1),
+        reached: DateTime.parse(entry['reached'])
+      }
+    end
+    results
+  end
+
   def reset
     @client.query("DELETE FROM visits")
     @client.query("DELETE FROM days")
@@ -17,7 +30,6 @@ class Db
 
   def visits(ip)
     results = @client.query("SELECT count FROM visits WHERE ip='#{ip}'")
-    puts "SELECT count FROM visits WHERE ip='#{ip}'"
     results.each do |r|
       return r['count'].to_i
     end

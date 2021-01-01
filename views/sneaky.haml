@@ -1,0 +1,22 @@
+:css
+  table, th, td {
+    border: 1px solid #666;
+  }
+  table th, table td {
+    padding: 10px;
+  }
+%body
+  %h1
+    %table
+      %tr
+        %tr
+          %td IP
+          %td Day
+          %td Competed?
+          %td Reached
+      - days.each do |day|
+        %tr
+          %td= day[:ip]
+          %td= day[:day]
+          %td= (day[:completed] == 1)
+          %td= day[:reached].strftime('%Y-%m-%d %H:%M:%S')
