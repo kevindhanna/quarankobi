@@ -30,7 +30,11 @@ class Base < Sinatra::Base
     now = DateTime.now
 
     # if we've been on the current day for most of a day, we go up a day
-    difference = TimeDifference.between(now, reached).in_hours
+    if ENV['RACK_ENV'] == "development"
+      difference = TimeDifference.between(now, reached).in_seconds
+    else
+      difference = TimeDifference.between(now, reached).in_hours
+    end
     if difference > 16 && completed && day != 4
       DB.next_day(request.ip)
       redirect '/'
@@ -98,6 +102,7 @@ class Base < Sinatra::Base
       DB.complete(ip, 3)
     end
     message = "-.-./-.../...-/.-/--./-.--/.-./..-./..-.!".split("")
+    message.push("did you get all that?")
     haml :day_3, locals: {count: count, message: message}
   end
 end
