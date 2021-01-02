@@ -11,12 +11,14 @@
       %tr
         %tr
           %td IP
+          %td Name
           %td Day
           %td Competed?
           %td Reached
       - days.each do |day|
         %tr
           %td= day[:ip]
+          %td= day[:name]
           %td= day[:day]
           %td= (day[:completed] ? "yes" : "no")
           %td= day[:reached].strftime('%Y-%m-%d %H:%M:%S')

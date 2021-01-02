@@ -15,9 +15,10 @@ class Db
     results = results.map do |entry|
       {
         ip: entry['ip'],
+        name: entry['name'],
         day: entry['day'],
         completed: (entry['completed'] == 1),
-        reached: entry['reached']
+        reached: entry['reached'].is_a?(String) ? DateTime.parse(entry['reached']) :entry['reached']
       }
     end
     results
