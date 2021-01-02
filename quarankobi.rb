@@ -75,7 +75,7 @@ class Base < Sinatra::Base
     when 6
       day_6(request.ip, name, params, '/')
     else
-      day_5(name, '/', completed)
+      day_6(request.ip, name, params, '/')
     end
   end
 
