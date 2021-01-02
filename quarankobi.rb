@@ -54,7 +54,7 @@ class Base < Sinatra::Base
     else
       difference = TimeDifference.between(now, reached).in_hours
     end
-    if difference > 16 && completed && day != 6
+    if difference > 16 && completed && day != 7
       DB.next_day(request.ip)
       redirect '/'
     end
@@ -64,18 +64,20 @@ class Base < Sinatra::Base
       DB.complete(request.ip, 1)
       haml :day_1, locals: {name: name}
     when 2
-      day_2(name, "/", completed)
+      day_2(name, completed)
     when 3
       day_3(request.ip, name)
     when 4
       DB.complete(request.ip, 4)
       erb :day_4, locals: {name: name}
     when 5
-      day_5(name, '/', completed)
+      day_5(name, completed)
     when 6
       day_6(request.ip, name, params, '/')
+    when 7
+      day_7(name, completed, params['answer'])
     else
-      day_6(request.ip, name, params, '/')
+      day_7(name, completed)
     end
   end
 
@@ -89,7 +91,7 @@ class Base < Sinatra::Base
     day, reached, completed, name = DB.day(request.ip)
     redirect '/' if day < 2
 
-    day_2(name, '/day_2', day > 2)
+    day_2(name, day > 2)
   end
 
   get '/day_3' do
@@ -110,7 +112,7 @@ class Base < Sinatra::Base
     day, reached, completed, name = DB.day(request.ip)
     redirect '/' if day < 5
 
-    day_5(name, '/day_5', day > 5)
+    day_5(name, day > 5)
   end
 
   get '/day_6' do
@@ -120,7 +122,14 @@ class Base < Sinatra::Base
     day_6(request.ip, name, params, '/day_6')
   end
 
-  def day_2(name, redirect_url, completed)
+  get '/day_7' do
+    day, reached, completed, name = DB.day(request.ip)
+    redirect '/' if day < 7
+
+    day_7(name, day > 7, params['answer'])
+  end
+
+  def day_2(name, completed)
     score = params['score']
     if score
       score = params['score'].delete(",")
@@ -128,8 +137,9 @@ class Base < Sinatra::Base
     score = score.to_i || nil
     if score >= 15000
       DB.complete(request.ip, 2)
+      completed = true
     end
-    haml :day_2, locals: {score: score, name: name, redirect_url: redirect_url, completed: completed}
+    haml :day_2, locals: {name: name, completed: completed, score: score}
   end
 
   def day_3(ip, name)
@@ -146,7 +156,7 @@ class Base < Sinatra::Base
     haml :day_3, locals: {count: count, message: message, name: name}
   end
 
-  def day_5(name, redirect_url, completed)
+  def day_5(name, completed)
     kj = params['kj']
     if kj
       kj = params['kj'].delete(",")
@@ -154,8 +164,9 @@ class Base < Sinatra::Base
     kj = kj.to_i || nilp
     if kj == 5710
       DB.complete(request.ip, 5)
+      completed = true
     end
-    erb :day_5, locals: {kj: kj, name: name, redirect_url: redirect_url, completed: completed}
+    erb :day_5, locals: {name: name, completed: completed, kj: kj}
   end
 
   def day_6(ip, name, params, redirect_url)
@@ -177,5 +188,16 @@ class Base < Sinatra::Base
     end
 
     erb :day_6, locals: {name: name, submitted: params.length > 0, result: result, answers: answers}
+  end
+
+  def day_7(name, completed, answer)
+    if answer
+      answer = answer.delete(" ").delete("/").delete(",").downcase
+    end
+    if answer == "lbh"
+      DB.complete(request.ip, 7)
+      completed = true
+    end
+    erb :day_7, locals: {name: name, completed: completed}
   end
 end

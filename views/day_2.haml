@@ -68,7 +68,7 @@
       %br
       %a{ :href => "https://www.geoguessr.com/maps/5fede38b0f95370001fb9ce0/play" }
         %h2 Fun Game!
-    - if score >= 15000 || completed
+    - if completed
       %h2
         CONGRATULATIONS!
         Here's your clue:
@@ -89,7 +89,7 @@
         %br
         <input type="submit">
         </form>
-        - if score > 0 && score < 15000
+        - if score > 0
           %h2 Try again!
     %a.link_back{ :href => "/day_1" }
       %h3 Day 1
