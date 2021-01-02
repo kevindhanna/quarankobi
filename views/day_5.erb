@@ -4,50 +4,106 @@
 <head>
   <meta charset="utf-8">
 
-  <title>The HTML5 Herald</title>
-  <meta name="description" content="The HTML5 Herald">
-  <meta name="author" content="SitePoint">
+  <title>QuaranKobi</title>
   <style>
     body {
-        background: url("https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse2.mm.bing.net%2Fth%3Fid%3DOIP.OQpDvGpr5uo0XB3z4n0EMgHaEK%26pid%3DApi&f=1");
-        background-size: 100%
+        background: url("beer.jpg");
+        background-size: 100%;
+        font-family: arial
     }
-    .image {
+    h1 {
+        font-size: 4em;
+        text-shadow:2px 2px 8px black;
+    }
+    h2 {
+        font-size: 1.5em;
+        text-shadow:2px 2px 8px black;
+    }
+    .header {
+        color: white;
         position: absolute;
-        z-index: 9;
+        width: 10vw;
+        z-index: 10;
+    }
+    .content {
+        color: white;
+        font-family: "arial";
         text-align: center;
-        cursor: move;
-        border-style: solid;
-        scale: 65%
+        position: absolute;
+        z-index: 0;
+        padding-left: 10vw;
+        padding-right: 10vw;
+        line-height: 1.2;
     }
     .back_links {
         font-size: 2em;
-        margin-top: 60vh;
     }
     .home_link {
         width: 10vw;
-
     }
     .help {
         background-color: yellow
     }
   </style>
 </head>
-
 <body>
-  <a href="/">
-    <img class="home_link" src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.geopoll.com%2Fwp-content%2Fuploads%2F2017%2F12%2Fcartoon-house.png&f=1&nofb=1">
-  </a>
-  <img id="1" class="image" src="1.png" style="top: 8px; left: -12px;"/>
-  <img id="2" class="image" src="2.png" style="top: -50px; left: 345px;"/>
-  <img id="3" class="image" src="3.png" style="top: 223px; left: 794px;"/>
-  <img id="4" class="image" src="4.png" style="top: 259px; left: 310px;"/>
-  <div class="back_links">
-    <a href="/day_1">day 1</a></br>
-    <a href="/day_2?score=15000">day 2</a></br>
-    <a href="/day_3">day 3</a></br>
-    <a href="/day_4">day 4</a></br>
-    <a class="help" href="mailto:helpmequarankobi@hotmail.com">help!</a></br>
+  <div class="header">
+    <a href="/">
+      <img class="home_link" src="homebutton.png">
+    </a>
+    <% if !name %>
+    <form action="/set_name" method="POST">
+      <label for="Name">Hey tell me your name</label>
+      <input id="Name" name="Name" type="text"/>
+      <br>
+      <input value="go on then" type="submit">
+    </form>
+    <% end %>
+    <div class="back_links">
+      <a href="/day_1">day 1</a></br>
+      <a href="/day_2">day 2</a></br>
+      <a href="/day_3">day 3</a></br>
+      <a href="/day_4">day 4</a></br>
+      <a class="help" href="mailto:helpmequarankobi@hotmail.com">help!</a></br>
+    </div>
   </div>
+
+  <div class="content">
+    <h1>
+      Start here!
+      <br/>
+      <a href= "https://www.google.com/maps/@-28.017658,153.4296386,3a,75y,322.51h,90t/data=!3m8!1e1!3m6!1sAF1QipMZbmzPXlAJG-O3IGQGp6kvmOg2P4bf01osQeLd!2e10!3e11!6shttps:%2F%2Flh5.googleusercontent.com%2Fp%2FAF1QipMZbmzPXlAJG-O3IGQGp6kvmOg2P4bf01osQeLd%3Dw203-h100-k-no-pi-0-ya43.892437-ro-0-fo100!7i12000!8i6000">
+        GO!
+      </a>
+    </h1>
+    <h2>
+      Go to the brewery you see all around you.
+      <br/>
+      The Eetcafe on the end of the main road has a terrible review, but Martine loved a place in Keerbergen… go there.
+      <br/>
+      There is a Zaal nearby, from the alleyway on the left you can see a faded orange sticker with a website… go to the address of their main office (check the bottom of the page).
+      <br/>
+      You can catch a train nearby, the S10 goes from Dendermonde to where you must go next.
+      <br/>
+      In the station you can get a coffee from a place we also have in Australia. Go to the Australian version’s website.
+      <br/>
+      Check out the menu, how many kilojoules is a big breakfast…?
+    </h2>
+    <% if kj == 5710 || completed %>
+      <h2>THATS RIGHT!</h2>
+      <h2>here's your next clue:</h2>
+      <h1>-. &nbsp;&nbsp; --.</h1>
+    <% else %>
+      <form method="GET">
+        <input name="kj" type="text"/>
+        <br>
+        <input value="Think you got it?" type="submit">
+      </form>
+      <% if kj != 0 %>
+        <h2>WRONG! Try again!</h2>
+      <% end %>
+    <% end %>
+  </div>
+
 </body>
 </html>

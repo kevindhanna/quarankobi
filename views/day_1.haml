@@ -5,7 +5,7 @@
   .tiled-image {
     background-image: url("https://datingasociopath.files.wordpress.com/2013/05/isolation.png");
   }
-  .contents {
+  .content {
     color: white;
     font-family: "arial";
     text-align: center;
@@ -48,7 +48,7 @@
 %body.tiled-image
   %div.header
     %a{ :href => "/" }
-      %img.home_link(src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.geopoll.com%2Fwp-content%2Fuploads%2F2017%2F12%2Fcartoon-house.png&f=1&nofb=1")
+      %img.home_link(src="homebutton.png")
     - if !name
       %div.name_form
         <form action="/set_name" method="POST">
@@ -57,7 +57,7 @@
         %br
         <input value="go on then" type="submit">
         </form>
-  %div.contents
+  %div.content
     %h1
       You made it!
     %br
