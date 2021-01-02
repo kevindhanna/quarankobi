@@ -30,7 +30,7 @@ class Base < Sinatra::Base
     now = DateTime.now
 
     # if we've been on the current day for most of a day, we go up a day
-    difference = TimeDifference.between(now, reached).in_seconds
+    difference = TimeDifference.between(now, reached).in_hours
     if difference > 16 && completed && day != 4
       DB.next_day(request.ip)
       redirect '/'
