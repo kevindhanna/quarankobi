@@ -1,0 +1,494 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>QuaranKobi</title>
+  <style>
+    label {
+        font-size: 2em;
+    }
+    body {
+        background: url("pubquiz.jpg");
+        background-size: 100%;
+        font-family: arial;
+        backdrop-filter: blur(2px);
+        color: white  ;
+        text-size: 1.5em;
+        text-shadow:
+		        -1px -1px 0 #000,
+		        1px -1px 0 #000,
+		        -1px 1px 0 #000,
+		        1px 1px 0 #000;
+    }
+    table {
+        text-align: left;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    table {
+        border: 1px solid white;
+    }
+    tr {
+        border: 1px solid white ;
+    }
+    td {
+        max-width: 60vw;
+        border: 1px solid white ;
+        border-collapse: collapse;
+        padding-left: 1em;
+        padding-right: 1em;
+    }
+    h1 {
+        font-size: 3em;
+    }
+    h2 {
+      font-size: 1.5em;
+    }
+    .heading {
+        font-size: 1.5em;
+        padding: 0.5em;
+        font-weight: bold;
+    }
+    .header {
+        position: absolute;
+        width: 10vw;
+        z-index: 10;
+    }
+    .content {
+        font-family: "arial";
+        text-align: center;
+        padding-left: 10vw;
+        padding-right: 10vw;
+    }
+    .fun_fact {
+        background-color: pink;
+        padding-top: 0.2em;
+        padding-bottom: 0.2em;
+    }
+    .back_links {
+        font-size: 2em;
+    }
+    .home_link {
+    width: 10vw;
+    border-radius: 20px
+    }
+    .help {
+        background-color: yellow
+    }
+    .submit {
+        padding: 1em;
+        background: lightgreen;
+        border-radius: 20 px;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <a href="/">
+      <img class="home_link" src="homebutton.png">
+    </a>
+    <% if !name %>
+    <form action="/set_name" method="POST">
+      <label for="Name">Hey tell me your name</label>
+      <input id="Name" name="Name" type="text"/>
+      <br>
+      <input value="go on then" type="submit">
+    </form>
+    <% end %>
+    <div class="back_links">
+      <a href="/day_1">day 1</a></br>
+      <a href="/day_2">day 2</a></br>
+      <a href="/day_3">day 3</a></br>
+      <a href="/day_4">day 4</a></br>
+      <a href="/day_5">day 5</a></br>
+      <a class="help" href="mailto:helpmequarankobi@hotmail.com">help!</a></br>
+    </div>
+  </div>
+
+  <div class="content">
+    <h1>PUB QUIZ TIME</h1>
+
+    <form action="/" method="GET">
+      <table border="1">
+        <tr>
+          <td></td>
+          <td class="heading">ROUND 1: Australia</td>
+          <td>True / False</td>
+        </tr>
+        <tr>
+          <td>1.</td>
+          <td>
+            <p>
+              Sharks are the most common cause of injury by marine life in NSW.
+            </p>
+            <% if answers['1.1'] %>
+            <p class="fun_fact">
+              Bluebottle stings are actually the most common form of injury caused by marine life in New South Wales.
+            </p>
+            <% end %>
+          </td>
+          <td>
+            <fieldset style="border-style: none;" name="1.1">
+              <label for="1.1.true">.</label>
+              <input type="radio" name="1.1" id="1.1.true" value="true">
+              <label for="1.1.false">-</label>
+              <input type="radio" name="1.1" id="1.1.false" value="false">
+            </fieldset>
+          </td>
+        <tr>
+        </tr>
+        <td>2.</td>
+        <td>
+          <p>
+            Australia is wider than the moon.
+          </p>
+          <% if answers['1.2'] %>
+          <p class="fun_fact">
+            The moon sits at 3400km in diameter, while Australia's diameter from east to west is almost 4000km
+          </p>
+          <% end %>
+        </td>
+        <td>
+          <fieldset style="border-style: none;" name="1.2">
+            <label for="1.2.true">.</label>
+            <input type="radio" name="1.2" id="1.2.true" value="true">
+            <label for="1.2.false">-</label>
+            <input type="radio" name="1.2" id="1.2.false" value="false">
+          </fieldset>
+        </td>
+        </tr>
+        <tr>
+          <td>3.</td>
+          <td>
+            <p>
+              Prime Minister Bob Hawke broke the world record for skulling a pint of beer in 12 seconds.
+            </p>
+
+            <% if answers['1.3'] %>
+            <p class="fun_fact">
+              Hawkey (the fucking legend) downed a <strong>yard glass!!!<strong> Of beer in <strong>11 seconds!!<strong> What a fucking legend.
+            </p>
+            <% end %>
+          </td>
+          <td>
+            <fieldset style="border-style: none;" name="1.3">
+              <label for="1.3.true">.</label>
+              <input type="radio" name="1.3" id="1.3.true" value="true">
+              <label for="1.3.false">-</label>
+              <input type="radio" name="1.3" id="1.3.false" value="false">
+            </fieldset>
+          </td>
+        </tr>
+        <tr>
+          <td>4.</td>
+          <td>
+            <p>
+              The Big Prawn is found in Woombye.
+            </p>
+
+            <% if answers['1.4'] %>
+            <p class="fun_fact">
+              The Big Pineapple is in Woombye, the Big Prawn is in Ballina.
+            </p>
+            <% end %>
+          </td>
+          <td>
+            <fieldset style="border-style: none;" name="1.4">
+              <label for="1.4.true">.</label>
+              <input type="radio" name="1.4" id="1.4.true" value="true">
+              <label for="1.4.false">-</label>
+              <input type="radio" name="1.4" id="1.4.false" value="false">
+            </fieldset>
+          </td>
+        </tr>
+        <tr>
+          <td></td>
+          <td class="heading">ROUND 2: Border Collies</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>1.</td>
+          <td>
+            <p>
+              Border Collies are named after the border of Scotland and England.
+            </p>
+            <% if answers['2.1'] %>
+            <p class="fun_fact">
+              The word “collie” is a Scotch word used to describe sheepdogs. Because this breed flourished in the border region of England and Scotland, it was christened the “Border Collie.” Thankfully, they do equally well on the beaches of Queensland.
+            </p>
+            <% end %>
+          </td>
+          <td>
+            <fieldset style="border-style: none;" name="2.1">
+              <label for="2.1.true">.</label>
+              <input type="radio" name="2.1" id="2.1.true" value="true">
+              <label for="2.1.false">-</label>
+              <input type="radio" name="2.1" id="2.1.false" value="false">
+            </fieldset>
+          </td>
+        <tr>
+        </tr>
+        <td>2.</td>
+        <td>
+          <p>
+            Queen Elizabeth has stated she prefers Border Collies over Corgis.
+          </p>
+          <% if answers['2.2'] %>
+          <p class="fun_fact">
+            Queen Victoria preferred border collies, Queen Elizabeth definitely prefers Corgis.
+          </p>
+          <% end %>
+        </td>
+        <td>
+          <fieldset style="border-style: none;" name="2.2">
+            <label for="2.2.true">.</label>
+            <input type="radio" name="2.2" id="2.2.true" value="true">
+            <label for="2.2.false">-</label>
+            <input type="radio" name="2.2" id="2.2.false" value="false">
+          </fieldset>
+        </td>
+        </tr>
+        <tr>
+          <td>3.</td>
+          <td>
+            <p>
+              Robert Burns owned a border collie named Luath.
+            </p>
+            <% if answers['2.3'] %>
+            <p class="fun_fact">
+              Luath’s death inspired the poem “The Twa Dogs”
+            </p>
+            <% end %>
+          </td>
+          <td>
+            <fieldset style="border-style: none;" name="2.3">
+              <label for="2.3.true">.</label>
+              <input type="radio" name="2.3" id="2.3.true" value="true">
+              <label for="2.3.false">-</label>
+              <input type="radio" name="2.3" id="2.3.false" value="false">
+            </fieldset>
+          </td>
+        </tr>
+        <tr>
+          <td></td>
+          <td class="heading">ROUND 3: Gold Coast</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>1.</td>
+          <td>
+            <p>
+              The Australian Crawl song "The Boys Light Up" also mentions the line "That flat in Broad Beach, with the ocean view".
+            </p>
+            <% if answers['3.1'] %>
+            <p class="fun_fact">
+              False, it mentions the flat in Surfers Paradise.
+            </p>
+            <% end %>
+          </td>
+          <td>
+            <fieldset style="border-style: none;" name="3.1">
+              <label for="3.1.true">.</label>
+              <input type="radio" name="3.1" id="3.1.true" value="true">
+              <label for="3.1.false">-</label>
+              <input type="radio" name="3.1" id="3.1.false" value="false">
+            </fieldset>
+          </td>
+        </tr>
+        <tr>
+          <td>2.</td>
+          <td>
+            <p>
+              The Pink Poodle sign, 18 Fern Street, in the Gold Coast is Heritage listed.
+            </p>
+            <% if answers['3.2'] %>
+            <p class="fun_fact">
+              Um yeah, it is. That’s it. That’s the fact.
+            </p>
+            <% end %>
+          </td>
+          <td>
+            <fieldset style="border-style: none;" name="3.2">
+              <label for="3.2.true">.</label>
+              <input type="radio" name="3.2" id="3.2.true" value="true">
+              <label for="3.2.false">-</label>
+              <input type="radio" name="3.2" id="3.2.false" value="false">
+          </td>
+        </tr>
+        <tr>
+          <td></td>
+          <td class="heading">ROUND 4: COVID</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>1.</td>
+          <td>
+            <p>
+              Covid is thought to have originated on November 17 2019.
+            </p>
+            <% if answers['4.1'] %>
+            <p class="fun_fact">
+              True! Happy Birthday COVID, you’re a Scorpio.
+            </p>
+            <% end %>
+          </td>
+          </td>
+          <td>
+            <fieldset style="border-style: none;" name="4.1">
+              <label for="4.1.true">.</label>
+              <input type="radio" name="4.1" id="4.1.true" value="true">
+              <label for="4.1.false">-</label>
+              <input type="radio" name="4.1" id="4.1.false" value="false">
+            </fieldset>
+          </td>
+        </tr>
+        <tr>
+          <td>2.</td>
+          <td>
+            <p>
+              If you start singing the chorus of Mr Brightside by the Killers as you begin to wash your hands, give your hands a shake when you get to “eager eyes” that is the perfect length of time for a COVID handwash.
+            </p>
+            <% if answers['4.2'] %>
+            <p class="fun_fact">
+              True. It will also be stuck in your head for the next 48 hours.
+            </p>
+            <% end %>
+          </td>
+          <td>
+            <fieldset style="border-style: none;" name="4.2">
+              <label for="3.2.true">.</label>
+              <input type="radio" name="4.2" id="4.2.true" value="true">
+              <label for="4.2.false">-</label>
+              <input type="radio" name="4.2" id="4.2.false" value="false">
+            </fieldset>
+          </td>
+        </tr>
+        <tr>
+          <td>3.</td>
+          <td>
+            <p>
+              Bill Gates and the global elite are behind the COVID virus being created in a lab to undermine Western Democracy and establish a new world order.
+            </p>
+            <% if answers['4.3'] %>
+            <p class="fun_fact">
+              What? No.
+            </p>
+            <% end %>
+          </td>
+          <td>
+            <fieldset style="border-style: none;" name="4.3">
+              <label for="4.3.true">.</label>
+              <input type="radio" name="4.3" id="4.3.true" value="true">
+              <label for="4.3.false">-</label>
+              <input type="radio" name="4.3" id="4.3.false" value="false">
+            </fieldset>
+          </td>
+        </tr>
+        <tr>
+          <td>4.</td>
+          <td>
+            <p>
+              More than 1.5 billion COVID face masks are projected to enter our oceans in 2020.
+            </p>
+            <% if answers['4.4'] %>
+            <p class="fun_fact">
+              True, sadly.
+            </p>
+            <% end %>
+          </td>
+          <td>
+            <fieldset style="border-style: none;" name="4.4">
+              <label for="4.4.true">.</label>
+              <input type="radio" name="4.4" id="4.4.true" value="true">
+              <label for="4.4.false">-</label>
+              <input type="radio" name="4.4" id="4.4.false" value="false">
+            </fieldset>
+          </td>
+        </tr>
+        <tr>
+          <td></td>
+          <td class="heading">ROUND 5: COVID</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>1.</td>
+          <td>
+            <p>
+              The Apollo 11 astronauts had to quarantine for two weeks because they had brought back a "space flu"
+            </p>
+            <% if answers['5.1'] %>
+            <p class="fun_fact">
+              They were feared to have brought back a virus from space, but there was no such issue. Although, they did have to quarantine just in case.
+            </p>
+            <% end %>
+          </td>
+          <td>
+            <fieldset style="border-style: none;" name="5.1">
+              <label for="5.1.true">.</label>
+              <input type="radio" name="5.1" id="5.1.true" value="true">
+              <label for="5.1.false">-</label>
+              <input type="radio" name="5.1" id="5.1.false" value="false">
+            </fieldset>
+          </td>
+        </tr>
+        <tr>
+          <td>2.</td>
+          <td>
+            <p>
+              The famous gothic horror Dracula was written by Bram Stoker while the author was in Quarantine
+            </p>
+            <% if answers['5.2'] %>
+            <p class="fun_fact">
+              False! But Frankenstein was when Mary Shelley was isolating during a cholera epidemic.
+            </p>
+            <% end %>
+          </td>
+          <td>
+            <fieldset style="border-style: none;" name="5.2">
+              <label for="5.2.true">.</label>
+              <input type="radio" name="5.2" id="5.2.true" value="true">
+              <label for="5.2.false">-</label>
+              <input type="radio" name="5.2" id="5.2.false" value="false">
+            </fieldset>
+          </td>
+        </tr>
+        <tr>
+          <td>3.</td>
+          <td>
+            <p>
+              Isaac Newton changed our understanding of the universe while in isolation.
+            </p>
+            <% if answers['5.3'] %>
+            <p class="fun_fact">
+               When the Great Plague of London ravaged London Isaac Newton retreated to his family's farm at Woolsthorpe Manor. He studied optics and showed that white light is composed of all components of the spectrum, leading to the inception of astronomical spectroscopy.  And all you’re doing is this stupid  challenge.
+            </p>
+            <% end %>
+          </td>
+          <td>
+            <fieldset style="border-style: none;" name="5.3">
+              <label for="5.3.true">.</label>
+              <input type="radio" name="5.3" id="5.3.true" value="true">
+              <label for="5.3.false">-</label>
+              <input type="radio" name="5.3" id="5.3.false" value="false">
+            </fieldset>
+          </td>
+        </tr>
+      </table>
+      <br>
+      <input class="submit" type="submit" value="Check Answers">
+    </form>
+  </div>
+</body>
+<script>
+  let query = window.location.search
+  query = query.replace("?", "")
+  let params = query.split("&");
+  params = params.map(p => p.replace("=", "."))
+  params.forEach((p) => {
+    let el = document.getElementById(p)
+    el.click()
+  })
+</script>
+</html>

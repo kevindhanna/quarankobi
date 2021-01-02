@@ -2,6 +2,7 @@ require 'date'
 require 'sinatra'
 require 'time_difference'
 require_relative './helpers/db'
+require_relative './helpers/day_6'
 
 DB = Db.new
 
@@ -13,6 +14,8 @@ class Base < Sinatra::Base
       set    :erb, escape_html: true,
                    layout_options: {views: 'views/layouts'}
   end
+
+  include Day6
 
   get '/reset' do
     DB.reset
@@ -51,7 +54,7 @@ class Base < Sinatra::Base
     else
       difference = TimeDifference.between(now, reached).in_hours
     end
-    if difference > 16 && completed && day != 5
+    if difference > 16 && completed && day != 6
       DB.next_day(request.ip)
       redirect '/'
     end
@@ -69,6 +72,8 @@ class Base < Sinatra::Base
       erb :day_4, locals: {name: name}
     when 5
       day_5(name, '/', completed)
+    when 6
+      day_6(request.ip, name, params, '/')
     else
       day_5(name, '/', completed)
     end
@@ -108,6 +113,13 @@ class Base < Sinatra::Base
     day_5(name, '/day_5', completed)
   end
 
+  get '/day_6' do
+    day, reached, completed, name = DB.day(request.ip)
+    redirect '/' if day < 6
+
+    day_6(request.ip, name, params, '/day_6')
+  end
+
   def day_2(name, redirect_url, completed)
     score = params['score']
     if score
@@ -139,11 +151,30 @@ class Base < Sinatra::Base
     if kj
       kj = params['kj'].delete(",")
     end
-    kj = kj.to_i || nil
+    kj = kj.to_i || nilp
     if kj == 5710
       DB.complete(request.ip, 5)
     end
     erb :day_5, locals: {kj: kj, name: name, redirect_url: redirect_url, completed: completed}
   end
 
+  def day_6(ip, name, params, redirect_url)
+    # see if they've visited before, if so populate answers for them
+    # because I'm nice
+    if params.length == 0
+      params = DB.day_6_answers(request.ip)
+      if params.length > 0
+        redirect "#{redirect_url}?#{params}"
+      end
+    else
+      DB.set_day_6_answers(ip, request.query_string)
+    end
+
+    result, answers = validate_answers(params)
+    if result
+      DB.complete(request.ip, 6)
+    end
+
+    erb :day_6, locals: {name: name, submitted: params.length > 0, result: result, answers: answers}
+  end
 end

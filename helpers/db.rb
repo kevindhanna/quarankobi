@@ -70,6 +70,22 @@ class Db
   def set_name(ip, name)
     @client.query("UPDATE days SET name='#{name}' WHERE ip='#{ip}'")
   end
+
+  def set_day_6_answers(ip, answers)
+    if !has_answers(ip)
+      @client.query("INSERT INTO day_6_answers (ip, answers) VALUES ('#{ip}', '#{answers}')")
+    else
+      @client.query("UPDATE day_6_answers SET answers='#{answers}' where ip='#{ip}'")
+    end
+  end
+
+  def day_6_answers(ip)
+    result = @client.query("SELECT answers FROM day_6_answers WHERE ip='#{ip}'")
+    result.each do |r|
+      return r['answers']
+    end
+    ""
+  end
   private
 
   def add_ip(ip)
@@ -88,6 +104,15 @@ class Db
 
   def has_visited(ip)
     result = @client.query("SELECT ip FROM visits WHERE ip = '#{ip}'")
+    result.each do |r|
+      return true if r['ip'] == ip
+    end
+
+    false
+  end
+
+  def has_answers(ip)
+    result = @client.query("SELECT ip FROM day_6_answers WHERE ip = '#{ip}'")
     result.each do |r|
       return true if r['ip'] == ip
     end
