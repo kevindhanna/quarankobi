@@ -35,7 +35,15 @@
 %body.tiled-image
   %a{ :href => "/" }
     %img.home_link(src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.geopoll.com%2Fwp-content%2Fuploads%2F2017%2F12%2Fcartoon-house.png&f=1&nofb=1")
+  %br
+  - if !name
+    Hey tell me your name
+    <form action="/set_name" method="POST">
+    <input name="Name" type="text"/>
     %br
+    %br
+    <input type="submit">
+    </form>
   %div.contents
     %h1
       You made it!

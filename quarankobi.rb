@@ -26,7 +26,7 @@ class Base < Sinatra::Base
   end
 
   get '/' do
-    day, reached, completed = DB.day(request.ip)
+    day, reached, completed, name = DB.day(request.ip)
     now = DateTime.now
 
     # if we've been on the current day for most of a day, we go up a day
@@ -43,16 +43,14 @@ class Base < Sinatra::Base
     case day
     when 1
       DB.complete(request.ip, 1)
-      haml :day_1
+      haml :day_1, locals: {name: name}
     when 2
-      score = params['score'].delete(",")
-      score = params['score'].to_i || nil
-      day_2(score)
+      day_2(name, "/")
     when 3
-      day_3(request.ip)
+      day_3(request.ip, name)
     when 4
       DB.complete(request.ip, 4)
-      erb :day_4
+      erb :day_4, locals: {name: name}
     else
       erb :day_4
     end
@@ -63,36 +61,39 @@ class Base < Sinatra::Base
   end
 
   get '/day_2' do
-    day, reached, completed = DB.day(request.ip)
+    day, reached, completed, name = DB.day(request.ip)
     redirect '/' if day < 2
 
-    score = params['score'].delete(",")
-    score = score.to_i || nil
-    day_2(score)
+    day_2(name, '/day_2')
   end
 
   get '/day_3' do
-    day, reached, completed = DB.day(request.ip)
+    day, reached, completed, name = DB.day(request.ip)
     redirect '/' if day < 3
 
-    day_3(request.ip)
+    day_3(request.ip, name)
   end
 
   get '/day_4' do
-    day, reached, completed = DB.day(request.ip)
+    day, reached, completed, name = DB.day(request.ip)
     redirect '/' if day < 4
 
-    erb :day_4
+    erb :day_4, locals: {name: name}
   end
 
-  def day_2(score)
+  def day_2(name, redirect_url)
+    score = params['score']
+    if score
+      score = params['score'].delete(",")
+    end
+    score = score.to_i || nil
     if score >= 15000
       DB.complete(request.ip, 2)
     end
-    haml :day_2, locals: {score: score}
+    haml :day_2, locals: {score: score, name: name, redirect_url: redirect_url}
   end
 
-  def day_3(ip)
+  def day_3(ip, name)
     # increment the visit counter
     DB.visit(ip)
     # get total visits
@@ -103,6 +104,6 @@ class Base < Sinatra::Base
     end
     message = "-.-./-.../...-/.-/--./-.--/.-./..-./..-.!".split("")
     message.push("did you get all that?")
-    haml :day_3, locals: {count: count, message: message}
+    haml :day_3, locals: {count: count, message: message, name: name}
   end
 end

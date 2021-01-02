@@ -47,9 +47,9 @@ class Db
       add_ip(ip)
     end
 
-    results = @client.query("SELECT day, reached, completed FROM days WHERE ip='#{ip}'")
+    results = @client.query("SELECT day, reached, completed, name FROM days WHERE ip='#{ip}'")
     results.each do |r|
-      return [r['day'], r['reached'], (r['completed'] == 1)]
+      return [r['day'], r['reached'], (r['completed'] == 1), r['name']]
     end
   end
 
