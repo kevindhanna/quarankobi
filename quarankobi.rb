@@ -61,7 +61,8 @@ class Base < Sinatra::Base
     day, reached, completed = DB.day(request.ip)
     redirect '/' if day < 2
 
-    score = params['score'].to_i || nil
+    score = params['score'].delete(",")
+    score = score.to_i || nil
     day_2(score)
   end
 
