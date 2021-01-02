@@ -27,6 +27,7 @@ class Db
   def reset
     @client.query("DELETE FROM visits")
     @client.query("DELETE FROM days")
+    @client.query("DELETE FROM day_6_answers")
   end
 
   def cheatering(ip, day, completed)
@@ -86,6 +87,7 @@ class Db
     end
     ""
   end
+
   private
 
   def add_ip(ip)

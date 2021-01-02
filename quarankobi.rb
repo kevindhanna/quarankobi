@@ -159,6 +159,7 @@ class Base < Sinatra::Base
   end
 
   def day_6(ip, name, params, redirect_url)
+    answers = {}
     # see if they've visited before, if so populate answers for them
     # because I'm nice
     if params.length == 0
@@ -168,9 +169,9 @@ class Base < Sinatra::Base
       end
     else
       DB.set_day_6_answers(ip, request.query_string)
+      result, answers = validate_answers(params)
     end
 
-    result, answers = validate_answers(params)
     if result
       DB.complete(request.ip, 6)
     end
