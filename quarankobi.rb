@@ -110,7 +110,7 @@ class Base < Sinatra::Base
     day, reached, completed, name = DB.day(request.ip)
     redirect '/' if day < 5
 
-    day_5(name, '/day_5', completed)
+    day_5(name, '/day_5', day > 5)
   end
 
   get '/day_6' do
