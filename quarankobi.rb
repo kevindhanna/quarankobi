@@ -57,6 +57,8 @@ class Base < Sinatra::Base
   end
 
   get '/day_1' do
+    day, reached, completed, name = DB.day(request.ip)
+
     haml :day_1, locals: {name: name}
   end
 
