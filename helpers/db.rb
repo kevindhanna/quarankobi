@@ -62,6 +62,9 @@ class Db
     @client.query("UPDATE days SET completed=true WHERE ip='#{ip}' AND day=#{day}")
   end
 
+  def set_name(ip, name)
+    @client.query("UPDATE days SET name='#{name}' WHERE ip='#{ip}'")
+  end
   private
 
   def add_ip(ip)

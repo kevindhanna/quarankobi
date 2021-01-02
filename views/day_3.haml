@@ -32,18 +32,37 @@
   .link_back{
     color: yellow
   }
+  .header {
+    color: white;
+    position: absolute;
+    width: 10vw;
+    z-index: 10;
+  }
   .home_link {
     width: 10vw;
-    float: left
+  }
+  .name_form {
+    text-align: center;
   }
   .help {
     background-color: yellow
   }
 
+%head
+  %title
+    QuaranKobi
 %body.tiled-image
-  %a{ :href => "/" }
-    %img.home_link(src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.geopoll.com%2Fwp-content%2Fuploads%2F2017%2F12%2Fcartoon-house.png&f=1&nofb=1")
-    %br
+  %div.header
+    %a{ :href => "/" }
+      %img.home_link(src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.geopoll.com%2Fwp-content%2Fuploads%2F2017%2F12%2Fcartoon-house.png&f=1&nofb=1")
+    - if !name
+      %div.name_form
+        <form action="/set_name" method="POST">
+        <label for="Name">Hey tell me your name</label>
+        <input id="Name" name="Name" type="text"/>
+        %br
+        <input value="go on then" type="submit">
+        </form>
   %div.contents
     - if count == 1
       %h2

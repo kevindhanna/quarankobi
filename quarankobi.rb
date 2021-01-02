@@ -25,6 +25,11 @@ class Base < Sinatra::Base
     haml :sneaky, locals: {days: days}
   end
 
+  post '/set_name' do
+    DB.set_name(request.ip, params['Name'])
+    redirect '/'
+  end
+
   get '/' do
     day, reached, completed, name = DB.day(request.ip)
     now = DateTime.now
