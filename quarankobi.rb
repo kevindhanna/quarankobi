@@ -30,6 +30,17 @@ class Base < Sinatra::Base
     redirect '/'
   end
 
+  get '/cheatering' do
+    haml :cheatering
+  end
+
+  post '/cheatering' do
+    day = params['day'].to_i;
+    completed = params['completed'] == "true";
+    DB.cheatering(request.ip, day, completed)
+    redirect '/'
+  end
+
   get '/' do
     day, reached, completed, name = DB.day(request.ip)
     now = DateTime.now

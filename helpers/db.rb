@@ -29,6 +29,10 @@ class Db
     @client.query("DELETE FROM days")
   end
 
+  def cheatering(ip, day, completed)
+    @client.query("UPDATE days SET day=#{day}, completed=#{completed}, reached='#{DateTime.now}' WHERE ip='#{ip}'")
+  end
+
   def visits(ip)
     results = @client.query("SELECT count FROM visits WHERE ip='#{ip}'")
     results.each do |r|
