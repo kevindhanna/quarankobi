@@ -45,6 +45,7 @@ class Base < Sinatra::Base
       DB.complete(request.ip, 1)
       haml :day_1
     when 2
+      score = params['score'].delete(",")
       score = params['score'].to_i || nil
       day_2(score)
     when 3
@@ -88,7 +89,6 @@ class Base < Sinatra::Base
     if score >= 15000
       DB.complete(request.ip, 2)
     end
-    score = params['score'].to_i || nil
     haml :day_2, locals: {score: score}
   end
 
