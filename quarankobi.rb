@@ -57,7 +57,7 @@ class Base < Sinatra::Base
   end
 
   get '/day_1' do
-    haml :day_1
+    haml :day_1, locals: {name: name}
   end
 
   get '/day_2' do
