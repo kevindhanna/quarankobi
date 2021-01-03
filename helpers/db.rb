@@ -11,7 +11,7 @@ class Db
   end
 
   def day_data
-    results = @client.query("SELECT * from days")
+    results = @client.query("SELECT * from peeps")
     results = results.map do |entry|
       {
         ip: entry['ip'],
@@ -26,12 +26,13 @@ class Db
 
   def reset
     @client.query("DELETE FROM visits")
-    @client.query("DELETE FROM days")
+    @client.query("DELETE FROM peeps")
     @client.query("DELETE FROM day_6_answers")
+    @client.query("DELETE FROM day_11_history")
   end
 
   def cheatering(ip, day, completed)
-    @client.query("UPDATE days SET day=#{day}, completed=#{completed}, reached='#{DateTime.now}' WHERE ip='#{ip}'")
+    @client.query("UPDATE peeps SET day=#{day}, completed=#{completed}, reached='#{DateTime.now}' WHERE ip='#{ip}'")
   end
 
   def visits(ip)
@@ -53,7 +54,7 @@ class Db
       add_ip(ip)
     end
 
-    results = @client.query("SELECT day, reached, completed, name FROM days WHERE ip='#{ip}'")
+    results = @client.query("SELECT day, reached, completed, name FROM peeps WHERE ip='#{ip}'")
     results.each do |r|
       return [r['day'], r['reached'], (r['completed'] == 1), r['name']]
     end
@@ -61,15 +62,15 @@ class Db
 
   def next_day(ip)
     date = DateTime.now
-    @client.query("UPDATE days SET day=day+1, completed=false, reached='#{date}' WHERE ip = '#{ip}'")
+    @client.query("UPDATE peeps SET day=day+1, completed=false, reached='#{date}' WHERE ip = '#{ip}'")
   end
 
   def complete(ip, day)
-    @client.query("UPDATE days SET completed=true WHERE ip='#{ip}' AND day=#{day}")
+    @client.query("UPDATE peeps SET completed=true WHERE ip='#{ip}' AND day=#{day}")
   end
 
   def set_name(ip, name)
-    @client.query("UPDATE days SET name='#{name}' WHERE ip='#{ip}'")
+    @client.query("UPDATE peeps SET name='#{name}' WHERE ip='#{ip}'")
   end
 
   def set_day_6_answers(ip, answers)
@@ -107,11 +108,11 @@ class Db
 
   def add_ip(ip)
     date = DateTime.now
-    @client.query("INSERT INTO days (ip, day, completed, reached) VALUES ('#{ip}', 1, false, '#{date}')")
+    @client.query("INSERT INTO peeps (ip, day, completed, reached) VALUES ('#{ip}', 1, false, '#{date}')")
   end
 
   def has_day(ip)
-    result = @client.query("SELECT ip FROM days WHERE ip = '#{ip}'")
+    result = @client.query("SELECT ip FROM peeps WHERE ip = '#{ip}'")
     result.each do |r|
       return true if r['ip'] == ip
     end
