@@ -7,7 +7,7 @@ git_source(:github) {|repo_name| "https://github.com/#{repo_name}" }
 gem "haml"
 gem "puma"
 gem "rack"
-gem "mysql2"
+gem "sqlite3"
 gem "sinatra"
 gem "time_difference"
 

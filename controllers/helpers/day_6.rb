@@ -2,7 +2,6 @@ module Day6
   CORRECT = {"1.1"=>false, "1.2"=>true, "1.3"=>false, "1.4"=>false, "2.1"=>true, "2.2"=>false, "2.3"=>true, "3.1"=>false, "3.2"=>true, "4.1"=>true, "4.2"=>true, "4.3"=>false, "4.4"=>true, "5.1"=>false, "5.2"=>false, "5.3"=>true}
 
   def day_6(ip, name, params, redirect_url)
-    puts params
     answers = {}
     # see if they've visited before, if so populate answers for them
     # because I'm nice
