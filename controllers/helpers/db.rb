@@ -86,7 +86,7 @@ class Db
     result.each do |r|
       return r['answers']
     end
-    nil
+    ""
   end
 
   def set_day_11_history(ip, history)
