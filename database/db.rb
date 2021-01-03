@@ -1,13 +1,10 @@
 require 'date'
-require 'mysql2'
+require_relative './setup'
 
 class Db
+  include DBSetup
   def initialize
-    @client = Mysql2::Client.new(:host => ENV['HOST'],
-                                 :username => ENV['USERNAME'],
-                                 :password => ENV["PASSWORD"],
-                                 :database => ENV['DATABASE'],
-                                 :reconnect => true)
+    @client = setup_db
   end
 
   def day_data
