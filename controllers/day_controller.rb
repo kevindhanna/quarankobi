@@ -77,4 +77,9 @@ class DayController < Sinatra::Base
   get '/ip' do
     {ip: request.ip}.to_json
   end
+
+  get '/name' do
+    name = DB.name(request.ip)
+    {name: name}.to_json
+  end
 end

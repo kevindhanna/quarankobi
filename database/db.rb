@@ -101,6 +101,12 @@ class Db
     "{\"history\": []}"
   end
 
+  def name(ip)
+    result = @client.query("SELECT name FROM peeps WHERE ip='#{ip}'")
+    result.each do |r|
+      return r['name']
+    end
+  end
   private
 
   def add_ip(ip)

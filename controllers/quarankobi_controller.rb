@@ -51,4 +51,8 @@ class QuaranKobiController < Sinatra::Base
     end
   end
 
+  get '/day_9' do
+    erb :day_9, locals: {name: nil}
+  end
+
 end
