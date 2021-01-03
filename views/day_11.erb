@@ -38,10 +38,16 @@
         padding-left: 2em;
         padding-right: 2em;
         border-radius: 10px;
-        border-color: yellow;
-        background-color: yellow;
         cursor: pointer;
         outline: none;
+    }
+    .undo {
+        border-color: yellow;
+        background-color: yellow;
+    }
+    .clear {
+        border-color: salmon;
+        background-color: salmon;
     }
   </style>
 </head>
@@ -71,7 +77,7 @@
   <% if completed %>
   <div style="text-align: center">
     <img src="bmo-detective.jpg">
-    <h1>Great work kid, here's the code:</h1>
+    <h1>Great work kid, heres the code:</h1>
     <h1> -.. &nbsp; &nbsp; .... &nbsp; &nbsp; -. &nbsp; &nbsp; . &nbsp; &nbsp; -. &nbsp; &nbsp; .- &nbsp; &nbsp; --. &nbsp; &nbsp; ...- &nbsp; &nbsp; .- &nbsp; &nbsp; .-.</h1>
   </div>
   <% else %>
@@ -82,20 +88,29 @@
       <td>
         <canvas id="dots" class="canvas">
         </canvas>
-        <form method="GET">
-          <input type="text" name="code">
-          <input type="submit" value="GO">
-        </form>
+        <table>
+          <tr>
+            <td>
+              <form method="GET">
+                <input type="text" name="code">
+                <input type="submit" value="GO">
+              </form>
+            </td>
+            <td>
+              <button class="undo" id="undo">Oops!</button>
+            </td>
+            <td>
+              <button class="clear" id="clear">Fuck it all!</button>
+            </td>
+          </tr>
+        </table>
       </td>
       <td>
-        <button id="undo">Oops!</button>
-        <br>
-        <br>
-        C4 > D17 > M18 > N17 > N3 > D3 >C4
+        P6 > K6 > J7 > J6 > K5 > P5
         <br>
         D3 > C3 > B4 > B2 > D2 > E3
         <br>
-        E16 > L16 > K11 > E11
+        E16 > L16 > K11 > E11 >E16
         <br>
         E9 > G9
         <br>
@@ -105,23 +120,23 @@
         <br>
         C7 > C5 > E5 > F6 > F7 > E7 > E6 > C6
         <br>
-        P6 > K6 > J7 > J6 > K5 > P5
-        <br>
         M18 > R17 > R4 > N3
         <br>
         I6 > H5 > I5 > I6
         <br>
-        F14 > F15 > G14 > G15
+        C4 > D17 > M18 > N17 > N3 > D3 >C4
         <br>
-        I14 > I15 > J14 > J15
+        F14 > F15 > G15 > G14
+        <br>
+        K3 > F1 > F3 > G2 > I3
         <br>
         G13 > H12 > I13
         <br>
-        O15 > Q15 > Q13 > P14 > P15> P14> O13 > O15
-        <br>
-        O12 > Q12 > P11 > Q11 > O10
-        <br>
         Q9 > Q7 > O7 > O9 > Q9
+        <br>
+        O12 > Q12 > P11 > Q10 > O10
+        <br>
+        O15 > Q15 > Q13 > P14 > P15> P14> O13 > O15
       </td>
   </table>
   <% end %>
@@ -132,7 +147,8 @@
       ctx: null,
       start: null,
       offset: null,
-      paths: []
+      paths: [],
+      ip: null
   };
 
   function getPos(el) {
@@ -151,13 +167,24 @@
       data.ctx = data.canvas.getContext('2d');
 
       let offset = getPos(data.canvas);
-      console.log(offset)
       data.canvas.width = window.innerWidth * 0.4 * res;
       data.canvas.height = window.innerHeight * 0.7 * res;
 
       data.ctx.scale(res, res);
       data.canvas.addEventListener('mousedown', e => handleClick(e));
       document.getElementById("undo").addEventListener("mousedown", e => undo())
+      document.getElementById("clear").addEventListener("mousedown", e => clear())
+  }
+
+  const prepHistory = async () => {
+      let response = await fetch('/ip')
+      let body = await response.json()
+      data.ip = body.ip
+
+      response = await fetch('/day_11_history')
+      body = await response.json()
+      data.paths = body.history
+      drawPaths()
   }
 
   const handleClick = (e) => {
@@ -165,6 +192,7 @@
       if (data.start) {
           data.paths.push({start: data.start, end: point});
           drawPaths()
+          saveHistory(data.paths)
           data.start = null
       } else {
           data.start = point
@@ -174,27 +202,41 @@
   const drawLine = (start, end) => {
       data.ctx.beginPath();
       data.ctx.lineWidth = 5;
-      data.ctx.strokeStyle = '#777';
+      data.ctx.strokeStyle = '#00897B';
       data.ctx.moveTo(start.x, start.y);
       data.ctx.lineTo(end.x, end.y);
       data.ctx.stroke();
       data.ctx.closePath();
   }
 
-  function drawPaths(){
+  const saveHistory = async (history) => {
+      fetch('/day_11_history', {
+          method: 'POST',
+          body: JSON.stringify({history: history})
+      })
+  }
+
+  const clear = () => {
+      data.paths = []
+      drawPaths()
+      saveHistory(data.paths)
+  }
+
+  const drawPaths = () => {
       // delete everything
       data.ctx.clearRect(0,0,data.canvas.width,data.canvas.height);
       // draw all the paths in the paths array
-      data.paths.forEach(path=>{
+      data.paths.forEach(path => {
           drawLine(path.start, path.end)
       })
   }
 
-  function undo() {
+  const undo = () => {
       data.paths.pop()
       drawPaths()
   }
 
   prepCanvas();
+  prepHistory();
 </script>
 </html>

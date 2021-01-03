@@ -138,6 +138,20 @@ class Base < Sinatra::Base
     day_11(name, completed, params['code'])
   end
 
+  get '/day_11_history' do
+    DB.day_11_history(request.ip)
+  end
+
+  post '/day_11_history' do
+    request.body.rewind
+    history = request.body.read
+    DB.set_day_11_history(request.ip, history)
+  end
+
+  get '/ip' do
+    {ip: request.ip}.to_json
+  end
+
   def day_2(name, completed)
     score = params['score']
     if score

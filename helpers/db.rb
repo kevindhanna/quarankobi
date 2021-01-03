@@ -85,7 +85,22 @@ class Db
     result.each do |r|
       return r['answers']
     end
-    ""
+    nil
+  end
+
+  def set_day_11_history(ip, history)
+    if !has_history(ip)
+      @client.query("INSERT INTO day_11_history (ip, history) VALUES ('#{ip}', '#{history}')")
+    end
+    @client.query("UPDATE day_11_history SET history='#{history}' WHERE ip='#{ip}'")
+  end
+
+  def day_11_history(ip)
+    results =  @client.query("SELECT history FROM day_11_history WHERE ip='#{ip}'")
+    results.each do |r|
+      return r['history']
+    end
+    "{\"history\": []}"
   end
 
   private
@@ -115,6 +130,15 @@ class Db
 
   def has_answers(ip)
     result = @client.query("SELECT ip FROM day_6_answers WHERE ip = '#{ip}'")
+    result.each do |r|
+      return true if r['ip'] == ip
+    end
+
+    false
+  end
+
+  def has_history(ip)
+    result = @client.query("SELECT ip FROM day_11_history WHERE ip = '#{ip}'")
     result.each do |r|
       return true if r['ip'] == ip
     end

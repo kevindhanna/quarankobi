@@ -1,0 +1,129 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>QuaranKobi</title>
+  <style>
+    label {
+        font-size: 2em;
+    }
+    body {
+        font-family: arial;
+        backdrop-filter: blur(2px);
+        color: white  ;
+        text-size: 1.5em;
+        text-shadow:
+            -1px -1px 0 #000,
+            1px -1px 0 #000,
+            -1px 1px 0 #000,
+            1px 1px 0 #000;
+    }
+    .tiled-image {
+        background: url("lisa.png");
+        background-size: 50%;
+    }
+    h1 {
+        font-size: 3em;
+    }
+    h2 {
+      font-size: 1.5em;
+    }
+    .heading {
+        font-size: 1.5em;
+        padding: 0.5em;
+        font-weight: bold;
+    }
+    .header {
+        position: absolute;
+        width: 10vw;
+        z-index: 10;
+    }
+    .content {
+        font-family: "arial";
+        text-align: center;
+        padding-left: 10vw;
+        padding-right: 10vw;
+    }
+    .fun_fact {
+        background-color: pink;
+        padding-top: 0.2em;
+        padding-bottom: 0.2em;
+    }
+    .back_links {
+        font-size: 2em;
+    }
+    .home_link {
+    width: 10vw;
+    border-radius: 20px
+    }
+    .help {
+        background-color: yellow
+    }
+    .submit {
+        padding: 1em;
+        background: lightgreen;
+        border-radius: 20 px;
+    }
+  </style>
+</head>
+<body class="tiled-image">
+  <div class="header">
+    <a href="/">
+      <img class="home_link" src="homebutton.png">
+    </a>
+    <% if !name %>
+    <form action="/set_name" method="POST">
+      <label for="Name">Hey tell me your name</label>
+      <input id="Name" name="Name" type="text"/>
+      <br>
+      <input value="go on then" type="submit">
+    </form>
+    <% end %>
+    <div class="back_links">
+      <a href="/day_1">day 1</a></br>
+      <a href="/day_2">day 2</a></br>
+      <a href="/day_3">day 3</a></br>
+      <a href="/day_4">day 4</a></br>
+      <a href="/day_5">day 5</a></br>
+      <a href="/day_6">day 6</a></br>
+      <a href="/day_7">day 7</a></br>
+      <a class="help" href="mailto:helpmequarankobi@hotmail.com">help!</a></br>
+    </div>
+  </div>
+
+  <div class="content">
+    <h1>CROSSWORD TIME</h1>
+    <div style="margin:auto; display:flex; flex-direction:column; height:70vh; max-width:50vw">
+      <iframe border="0" src="https://crosswordlabs.com/embed/2021-01-01-66" style="flex:1; width:100%; padding:5px 0px 0 5px; border:3px solid black; "></iframe>
+      <a target="_blank" style="align-self:center; font-size:12px; color:black; padding-top:10px; text-decoration:none;text-align:center" href="https://crosswordlabs.com">Crossword Puzzle Maker</a>
+    </div>
+    <div>
+      <% if completed %>
+      <h1>Correct! Here it is in morse if that helps:</h1>
+      <h1>.-.. -... ....</h1>
+      <% else %>
+      <form method="GET">
+        <h1>
+          7(5) / 3(1) / 6(7) =
+          <input name="answer" type="text">
+          =
+          <input type="submit" value="GO">
+        </h1>
+      </form>
+      <% end %>
+    </div>
+  </div>
+</body>
+<script>
+  let query = window.location.search
+  query = query.replace("?", "")
+  let params = query.split("&");
+  params = params.map(p => p.replace("=", "."))
+  params.forEach((p) => {
+    let el = document.getElementById(p)
+    el.click()
+  })
+</script>
+</html>
