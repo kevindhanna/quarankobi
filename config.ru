@@ -1,6 +1,6 @@
 require 'dotenv/load'
 require 'sinatra'
-require "./controllers/helpers/db"
+require "./database/db"
 require "./controllers/admin_controller"
 require "./controllers/day_controller"
 require "./controllers/quarankobi_controller"
