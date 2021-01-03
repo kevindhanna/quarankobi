@@ -68,6 +68,13 @@
       <a class="help" href="mailto:helpmequarankobi@hotmail.com">help!</a></br>
     </div>
   </div>
+  <% if completed %>
+  <div style="text-align: center">
+    <img src="bmo-detective.jpg">
+    <h1>Great work kid, here's the code:</h1>
+    <h1> -.. &nbsp; &nbsp; .... &nbsp; &nbsp; -. &nbsp; &nbsp; . &nbsp; &nbsp; -. &nbsp; &nbsp; .- &nbsp; &nbsp; --. &nbsp; &nbsp; ...- &nbsp; &nbsp; .- &nbsp; &nbsp; .-.</h1>
+  </div>
+  <% else %>
   <table>
     <tr>
       <td>
@@ -82,6 +89,7 @@
       </td>
       <td>
         <button id="undo">Oops!</button>
+        <br>
         <br>
         C4 > D17 > M18 > N17 > N3 > D3 >C4
         <br>
@@ -116,6 +124,7 @@
         Q9 > Q7 > O7 > O9 > Q9
       </td>
   </table>
+  <% end %>
 </body>
 <script>
   let data = {
