@@ -18,9 +18,9 @@ module DBSetup
     maybe_create_migrations(client)
 
     ran = client.query("SELECT name FROM migrations").map do |result|
-      result[0]
+      result['name']
     end;
-    p migrations
+
     migrations.each_with_index do |m, i|
       if !ran.include?(m)
         load m
