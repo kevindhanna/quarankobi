@@ -1,0 +1,191 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>QuaranKobi</title>
+  <style>
+    body {
+        font-size: 1.5em;
+        background-color: aliceblue
+    }
+    .canvas {
+        width: 40vw;
+        height: 70vh;
+        background: url('connectdots.png') center;
+        background-size: 100%;
+        background-repeat: no-repeat;
+        max-width: 800px;
+    }
+    .home_link {
+        width: 10vw;
+        border-radius: 20px
+    }
+    .help {
+        background-color: yellow
+    }
+    .header {
+        width: 10vw;
+        float: left;
+    }
+    td {
+        padding-left: 1em;
+        padding-right: 1em;
+    }
+    button {
+        padding: 1em;
+        padding-left: 2em;
+        padding-right: 2em;
+        border-radius: 10px;
+        border-color: yellow;
+        background-color: yellow;
+        cursor: pointer;
+        outline: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <a href="/">
+      <img class="home_link" src="homebutton.png">
+    </a>
+    <% if !name %>
+    <form action="/set_name" method="POST">
+      <label for="Name">Hey tell me your name</label>
+      <input id="Name" name="Name" type="text"/>
+      <br>
+      <input value="go on then" type="submit">
+    </form>
+    <% end %>
+    <div class="back_links">
+      <a href="/day_1">day 1</a></br>
+      <a href="/day_2">day 2</a></br>
+      <a href="/day_3">day 3</a></br>
+      <a href="/day_4">day 4</a></br>
+      <a href="/day_5">day 5</a></br>
+      <a href="/day_6">day 6</a></br>
+      <a class="help" href="mailto:helpmequarankobi@hotmail.com">help!</a></br>
+    </div>
+  </div>
+  <table>
+    <tr>
+      <td>
+      </td>
+      <td>
+        <canvas id="dots" class="canvas">
+        </canvas>
+        <form method="GET">
+          <input type="text" name="code">
+          <input type="submit" value="GO">
+        </form>
+      </td>
+      <td>
+        <button id="undo">Oops!</button>
+        <br>
+        C4 > D17 > M18 > N17 > N3 > D3 >C4
+        <br>
+        D3 > C3 > B4 > B2 > D2 > E3
+        <br>
+        E16 > L16 > K11 > E11
+        <br>
+        E9 > G9
+        <br>
+        K3 > F1 > F3 > G2 > I3
+        <br>
+        K9 > L9
+        <br>
+        C7 > C5 > E5 > F6 > F7 > E7 > E6 > C6
+        <br>
+        P6 > K6 > J7 > J6 > K5 > P5
+        <br>
+        M18 > R17 > R4 > N3
+        <br>
+        I6 > H5 > I5 > I6
+        <br>
+        F14 > F15 > G14 > G15
+        <br>
+        I14 > I15 > J14 > J15
+        <br>
+        G13 > H12 > I13
+        <br>
+        O15 > Q15 > Q13 > P14 > P15> P14> O13 > O15
+        <br>
+        O12 > Q12 > P11 > Q11 > O10
+        <br>
+        Q9 > Q7 > O7 > O9 > Q9
+      </td>
+  </table>
+</body>
+<script>
+  let data = {
+      canvas: null,
+      ctx: null,
+      start: null,
+      offset: null,
+      paths: []
+  };
+
+  function getPos(el) {
+    for (var lx=0, ly=0;
+         el != null;
+         lx += el.offsetLeft, ly += el.offsetTop, el = el.offsetParent);
+    return {x: lx,y: ly};
+  }
+
+  const prepCanvas = () => {
+      let res = window.devicePixelRatio || 1;
+      let scale = 1 / res;
+      data.canvas = document.getElementById('dots');
+      data.offset = getPos(data.canvas);
+
+      data.ctx = data.canvas.getContext('2d');
+
+      let offset = getPos(data.canvas);
+      console.log(offset)
+      data.canvas.width = window.innerWidth * 0.4 * res;
+      data.canvas.height = window.innerHeight * 0.7 * res;
+
+      data.ctx.scale(res, res);
+      data.canvas.addEventListener('mousedown', e => handleClick(e));
+      document.getElementById("undo").addEventListener("mousedown", e => undo())
+  }
+
+  const handleClick = (e) => {
+      let point = {x: e.pageX - data.offset.x, y: e.pageY - data.offset.y}
+      if (data.start) {
+          data.paths.push({start: data.start, end: point});
+          drawPaths()
+          data.start = null
+      } else {
+          data.start = point
+      }
+  }
+
+  const drawLine = (start, end) => {
+      data.ctx.beginPath();
+      data.ctx.lineWidth = 5;
+      data.ctx.strokeStyle = '#777';
+      data.ctx.moveTo(start.x, start.y);
+      data.ctx.lineTo(end.x, end.y);
+      data.ctx.stroke();
+      data.ctx.closePath();
+  }
+
+  function drawPaths(){
+      // delete everything
+      data.ctx.clearRect(0,0,data.canvas.width,data.canvas.height);
+      // draw all the paths in the paths array
+      data.paths.forEach(path=>{
+          drawLine(path.start, path.end)
+      })
+  }
+
+  function undo() {
+      data.paths.pop()
+      drawPaths()
+  }
+
+  prepCanvas();
+</script>
+</html>

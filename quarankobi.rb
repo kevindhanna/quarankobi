@@ -129,6 +129,10 @@ class Base < Sinatra::Base
     day_7(name, day > 7, params['answer'])
   end
 
+  get '/day_11' do
+    erb :day_11, locals: {name: "kevin"}
+  end
+
   def day_2(name, completed)
     score = params['score']
     if score
