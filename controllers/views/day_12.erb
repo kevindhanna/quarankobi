@@ -14,7 +14,7 @@
         backdrop-filter: blur(2px);
         color: white  ;
         text-size: 1.5em;
-        background: url("lisa.png");
+        background: url("homework.jpg");
         text-shadow:
             -1px -1px 0 #000,
             1px -1px 0 #000,
@@ -54,7 +54,8 @@
     }
     .submit {
         padding: 1em;
-        background: lightgreen;
+    background: blue;
+    color: white;
         border-radius: 20 px;
     }
   </style>
@@ -86,19 +87,19 @@
 
   <div class="content">
     <div>
-      <% if completed %>
-      <h1>You play like Steve Wonder! Well earned:</h1>
-      <h1 style="font-size: 5em">-. &nbsp;&nbsp; . &nbsp;&nbsp; .-.</h1>
-      <% else %>
       <h1>
-        Learn to play this little ditty and you’ll hit the right keys.
+        Time to find out how good you are at copying things off screens!
       </h1>
-      <img class="staff" src="music.png"/>
-      <h2>You can find a piano <a href="https://www.onlinepianist.com/virtual-piano">HERE</a></h2>
+      <h2>Put your code in below and find out if you fucked it up</h2>
       <form method="GET">
         <input type="text" name="code"/>
-        <input class="submit" type="submit" value="Play us a song, you're the pianoperson"/>
+        <input class="submit" type="submit" value="hmmmm"/>
       </form>
+      <% if correct %>
+      <h1 style="color: lightgreen">Looks good to me, but what do I know? Morse code might as well be NORSE code to me, am I right?!</h1>
+      <% end %>
+      <% if incorrect %>
+      <h1 style="color: red">Wrong, bruh.</h1>
       <% end %>
     </div>
   </div>
