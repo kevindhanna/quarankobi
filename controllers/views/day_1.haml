@@ -9,8 +9,6 @@
     color: white;
     font-family: "arial";
     text-align: center;
-    position: absolute;
-    z-index: 0;
   }
   h1 {
     font-size: 4em;
@@ -34,64 +32,69 @@
   }
   .header {
     color: white;
-    position: absolute;
     width: 10vw;
-    z-index: 10;
+    float: left;
   }
   .name_form {
     text-align: center;
   }
-
+  tr, td{
+    vertical-align:top;
+  }
 %head
   %title
     QuaranKobi
 %body.tiled-image
-  %div.header
-    %a{ :href => "/" }
-      %img.home_link(src="homebutton.png")
-    - if !name
-      %div.name_form
-        <form action="/set_name" method="POST">
-        <label for="Name">Hey tell me your name</label>
-        <input id="Name" name="Name" type="text"/>
-        %br
-        <input value="go on then" type="submit">
-        </form>
-  %div.content
-    %h1
-      You made it!
-    %br
-    %h2
-      Not only to the country, but through our
-      %br
-    %div.container
-      <span style="color:#FF0000">M</span>
-      <span style="color:#66CC66">y</span>
-      <span style="color:#FF9966">S</span>
-      <span style="color:#FFCCCC">t</span>
-      <span style="color:#FF0066">E</span>
-      <span style="color:#FF0000">r</span>
-      <span style="color:#66CC66">I</span>
-      <span style="color:#FF9966">o</span>
-      <span style="color:#FFCCCC">U</span>
-      <span style="color:#FF0066">s</span>
-      %br
-      <span style="color:#FF0000">P</span>
-      <span style="color:#66CC66">u</span>
-      <span style="color:#FF9966">Z</span>
-      <span style="color:#FFCCCC">z</span>
-      <span style="color:#FF0066">L</span>
-      <span style="color:#FF0000">e</span>
-    %h2
-      too!
-      %br
+  %table
+    %tr
+      %td
+        %div.header
+          %a{ :href => "/" }
+            %img.home_link(src="homebutton.png")
+          %a{ :href => "mailto:helpmequarankobi@hotmail.com" }
+            %h3.help help!
+          - if !name
+            %div.name_form
+              <form action="/set_name" method="POST">
+              <label for="Name">Hey tell me your name</label>
+              <input id="Name" name="Name" type="text"/>
+              %br
+              <input value="go on then" type="submit">
+              </form>
+      %td
+        %div.content
+          %h1
+            You made it!
+          %br
+          %h2
+            Not only to the country, but through our
+            %br
+          %div.container
+            <span style="color:#FF0000">M</span>
+            <span style="color:#66CC66">y</span>
+            <span style="color:#FF9966">S</span>
+            <span style="color:#FFCCCC">t</span>
+            <span style="color:#FF0066">E</span>
+            <span style="color:#FF0000">r</span>
+            <span style="color:#66CC66">I</span>
+            <span style="color:#FF9966">o</span>
+            <span style="color:#FFCCCC">U</span>
+            <span style="color:#FF0066">s</span>
+            %br
+            <span style="color:#FF0000">P</span>
+            <span style="color:#66CC66">u</span>
+            <span style="color:#FF9966">Z</span>
+            <span style="color:#FFCCCC">z</span>
+            <span style="color:#FF0066">L</span>
+            <span style="color:#FF0000">e</span>
+          %h2
+            too!
+            %br
 
-    %h1
-      Here's your first hint:
-      %br
-      %div.hint -.-- ...- ... .-.
-      %br
-      %img(src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.rwlzCiafRBBk-21ygz2iQQAAAA%26pid%3DApi&f=1")
-    %br
-    %a{ :href => "mailto:helpmequarankobi@hotmail.com" }
-      %h3.help help!
+          %h1
+            Here's your first hint:
+            %br
+            %div.hint -.-- ...- ... .-.
+            %br
+            %img(src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.rwlzCiafRBBk-21ygz2iQQAAAA%26pid%3DApi&f=1")
+          %br
