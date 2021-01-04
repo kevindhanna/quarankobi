@@ -216,7 +216,7 @@
 
   const saveHistory = async (history) => {
       fetch('/day_11_history', {
-          method: 'POST',
+          method: 'PUT',
           body: JSON.stringify({history: history})
       })
   }

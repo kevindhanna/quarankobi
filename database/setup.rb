@@ -7,7 +7,6 @@ module DBSetup
                              :password => ENV["PASSWORD"],
                              :database => ENV['DATABASE'],
                              :reconnect => true)
-    puts "here"
     run_migrations(client)
     client
   end
@@ -31,7 +30,6 @@ module DBSetup
   end
 
   def maybe_create_migrations(client)
-    puts "maybe"
     begin
       client.query("create table migrations (name varchar(100))")
     rescue

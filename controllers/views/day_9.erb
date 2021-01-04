@@ -21,19 +21,11 @@
             1px 1px 0 #000;
     }
     .tiled-image {
-        background: url("lisa.png");
+        background: url("mouth.gif");
         background-size: 50%;
     }
-    h1 {
-        font-size: 3em;
-    }
     h2 {
-      font-size: 1.5em;
-    }
-    .heading {
-        font-size: 1.5em;
-        padding: 0.5em;
-        font-weight: bold;
+      font-size: 3em;
     }
     .header {
         position: absolute;
@@ -43,13 +35,9 @@
     .content {
         font-family: "arial";
         text-align: center;
+        padding-top: 30vh;
         padding-left: 10vw;
         padding-right: 10vw;
-    }
-    .fun_fact {
-        background-color: pink;
-        padding-top: 0.2em;
-        padding-bottom: 0.2em;
     }
     .back_links {
         font-size: 2em;
@@ -61,10 +49,28 @@
     .help {
         background-color: yellow
     }
-    .submit {
-        padding: 1em;
-        background: lightgreen;
-        border-radius: 20 px;
+    button {
+
+        padding: 0.5em;
+        font-size: 3em;
+        padding-left: 1em;
+        padding-right: 1em;
+        color: white;
+        font-weight: bold;
+        border-radius: 20px;
+    }
+    #go {
+        background-color: blue;
+        border-color: blue;
+    }
+    #reset {
+        background-color: red;
+        border-color: red;
+        font-size: 1em;
+        border-radius: 10px;
+    }
+    #words {
+        color: grey;
     }
   </style>
 </head>
@@ -89,76 +95,16 @@
       <a href="/day_5">day 5</a></br>
       <a href="/day_6">day 6</a></br>
       <a href="/day_7">day 7</a></br>
+      <a href="/day_8">day 8</a></br>
       <a class="help" href="mailto:helpmequarankobi@hotmail.com">help!</a></br>
     </div>
   </div>
 
   <div class="content">
-    <h1>CROSSWORD TIME</h1>
-    <div style="margin:auto; display:flex; flex-direction:column; height:70vh; max-width:50vw">
-      <iframe border="0" src="https://crosswordlabs.com/embed/2021-01-01-66" style="flex:1; width:100%; padding:5px 0px 0 5px; border:3px solid black; "></iframe>
-      <a target="_blank" style="align-self:center; font-size:12px; color:black; padding-top:10px; text-decoration:none;text-align:center" href="https://crosswordlabs.com">Crossword Puzzle Maker</a>
-    </div>
-    <div>
-      <% if completed %>
-      <h1>Correct! Here it is in morse if that helps:</h1>
-      <h1>.-.. -... ....</h1>
-      <% else %>
-      <form method="GET">
-        <h1>
-          7(5) / 3(1) / 6(7) =
-          <input name="answer" type="text">
-          =
-          <input type="submit" value="GO">
-        </h1>
-      </form>
-      <% end %>
-    </div>
+    <button id="go">GO</button>
+    <h2 id="twister"></h2>
+    <h2 id="words"></h2>
   </div>
 </body>
-<script>
-  let query = window.location.search
-  query = query.replace("?", "")
-  let params = query.split("&");
-  params = params.map(p => p.replace("=", "."))
-  params.forEach((p) => {
-    let el = document.getElementById(p)
-    el.click()
-  })
-
-  function twistTongue(tongueTwister) {
-    return new Promise((resolve, reject) => {
-      var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition
-      var recognition = new SpeechRecognition();
-    
-      recognition.continuous = false;
-      recognition.lang = 'en-US';
-      recognition.interimResults = true;
-      recognition.maxAlternatives = 1;
-
-      recognition.onresult = function(event) {
-        var result = event.results[0][0]
-        console.log(event, result)
-
-        // We may want to tweak the confidence number here if we get held up here in testing
-        if (result.confidence > 0.5 && !tongueTwister.startsWith(result.transcript)) {
-          recognition.stop()
-          return reject('WRONG WORDS')
-        } else if (result.transcript == tongueTwister) {
-          recognition.stop()
-          return resolve('GREAT')
-        } else if (result[0].isFinal) {
-          return reject('STOPPED EARLY')
-        }
-      }
-
-      recognition.start()
-    })
-  }
-  // twistTongue('Peter Piper picked a peck of pickled peppers')
-  // twistTongue('Betty Botter bought a bit of butter the butter Betty Botter bought was a bit bitter and made her batter bitter but a bit of better butter makes better batter so Betty Botter bought a bit of better butter making Betty Botter\'s bitter batter better')
-}
-  }
-
-</script>
+<script type="text/javascript"  src="day_9.js"></script>
 </html>

@@ -57,6 +57,27 @@ class DayController < Sinatra::Base
     day_7(name, day > 7, params['answer'])
   end
 
+  get '/day_9' do
+    day, reached, completed, name = DB.day(request.ip)
+    # redirect '/' if day < 9
+
+    erb :day_9, locals: {name: name, completed: completed}
+  end
+
+  get '/day_9_twister' do
+    {twister: DB.day_9(request.ip)}.to_json
+  end
+
+  put '/day_9' do
+    current = DB.day_9(request.ip)
+    # there are 3 tongue twisters in an array
+    if current < 4
+      DB.set_day_9(request.ip, current + 1)
+    else
+      DB.complete(request.ip, 9)
+    end
+  end
+
   get '/day_11' do
     day, reached, completed, name = DB.day(request.ip)
     redirect '/' if day < 11
@@ -68,7 +89,7 @@ class DayController < Sinatra::Base
     DB.day_11_history(request.ip)
   end
 
-  post '/day_11_history' do
+  put '/day_11_history' do
     request.body.rewind
     history = request.body.read
     DB.set_day_11_history(request.ip, history)
@@ -82,4 +103,5 @@ class DayController < Sinatra::Base
     name = DB.name(request.ip)
     {name: name}.to_json
   end
+
 end

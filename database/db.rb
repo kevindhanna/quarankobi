@@ -26,6 +26,7 @@ class Db
     @client.query("DELETE FROM peeps")
     @client.query("DELETE FROM day_6_answers")
     @client.query("DELETE FROM day_11_history")
+    @client.query("DELETE FROM day_9")
   end
 
   def cheatering(ip, day, completed)
@@ -40,14 +41,14 @@ class Db
   end
 
   def visit(ip)
-    if !has_visited(ip)
+    if !visited?(ip)
       @client.query("INSERT INTO visits (ip, count) VALUES ('#{ip}', 0)")
     end
     @client.query("UPDATE visits SET count=count+1 WHERE ip='#{ip}'")
   end
 
   def day(ip)
-    if !has_day(ip)
+    if !played?(ip)
       add_ip(ip)
     end
 
@@ -71,7 +72,7 @@ class Db
   end
 
   def set_day_6_answers(ip, answers)
-    if !has_answers(ip)
+    if !answered?(ip)
       @client.query("INSERT INTO day_6_answers (ip, answers) VALUES ('#{ip}', '#{answers}')")
     else
       @client.query("UPDATE day_6_answers SET answers='#{answers}' where ip='#{ip}'")
@@ -107,6 +108,23 @@ class Db
       return r['name']
     end
   end
+
+  def set_day_9(ip, twister)
+      @client.query("UPDATE day_9 SET twister=#{twister} where ip='#{ip}'")
+  end
+
+  def day_9(ip)
+    if !has_day_9?(ip)
+      @client.query("INSERT INTO day_9 (ip, twister) VALUES ('#{ip}', 0)")
+      return 1
+    end
+
+    result = @client.query("SELECT twister FROM day_9 where ip='#{ip}'")
+    result.each do |r|
+      return r['twister']
+    end
+  end
+
   private
 
   def add_ip(ip)
@@ -114,7 +132,7 @@ class Db
     @client.query("INSERT INTO peeps (ip, day, completed, reached) VALUES ('#{ip}', 1, false, '#{date}')")
   end
 
-  def has_day(ip)
+  def played?(ip)
     result = @client.query("SELECT ip FROM peeps WHERE ip = '#{ip}'")
     result.each do |r|
       return true if r['ip'] == ip
@@ -123,7 +141,7 @@ class Db
     false
   end
 
-  def has_visited(ip)
+  def visited?(ip)
     result = @client.query("SELECT ip FROM visits WHERE ip = '#{ip}'")
     result.each do |r|
       return true if r['ip'] == ip
@@ -132,7 +150,7 @@ class Db
     false
   end
 
-  def has_answers(ip)
+  def answered?(ip)
     result = @client.query("SELECT ip FROM day_6_answers WHERE ip = '#{ip}'")
     result.each do |r|
       return true if r['ip'] == ip
@@ -143,6 +161,15 @@ class Db
 
   def has_history(ip)
     result = @client.query("SELECT ip FROM day_11_history WHERE ip = '#{ip}'")
+    result.each do |r|
+      return true if r['ip'] == ip
+    end
+
+    false
+  end
+
+  def has_day_9?(ip)
+    result = @client.query("SELECT ip FROM day_9 WHERE ip = '#{ip}'")
     result.each do |r|
       return true if r['ip'] == ip
     end

@@ -43,16 +43,12 @@ class QuaranKobiController < Sinatra::Base
     when 7
       day_7(name, completed, params['answer'])
     when 9
-      erb :day_9, locals: {name: ''}
+      erb :day_9, locals: {name: name, completed: completed}
     when 11
       day_11(name, completed, params['code'])
     else
       day_7(name, completed)
     end
-  end
-
-  get '/day_9' do
-    erb :day_9, locals: {name: nil}
   end
 
 end
