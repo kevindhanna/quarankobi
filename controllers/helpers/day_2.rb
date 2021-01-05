@@ -1,14 +1,14 @@
 module Day2
-  def day_2(name, completed)
+  def day_2(user)
     score = params['score']
     if score
       score = params['score'].delete(",")
     end
     score = score.to_i || nil
-    if score >= 15000 && !completed
-      DB.complete(session['uuid'], 2)
-      completed = true
+    if score >= 15000 && !user.completed
+      user.complete
+      Peep.save(user)
     end
-    haml :day_2, locals: {name: name, completed: completed, score: score}
+    haml :day_2, locals: {name: user.name, completed: user.completed || user.day > 2, score: score}
   end
 end

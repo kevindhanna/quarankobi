@@ -5,7 +5,7 @@ class AdminController < Sinatra::Base
   use Auth
 
   before do
-    @id, = request.env.values_at :user
+    @user, = request.env.values_at :user
   end
 
   get '/reset' do
@@ -20,7 +20,8 @@ class AdminController < Sinatra::Base
   end
 
   post '/set_name' do
-    DB.set_name(session['uuid'], params['Name'])
+    @user.name = params['Name']
+    Peep.save(@user)
     redirect '/'
   end
 
@@ -31,7 +32,15 @@ class AdminController < Sinatra::Base
   post '/cheatering' do
     day = params['day'].to_i;
     completed = params['completed'] == "true";
-    DB.cheatering(@id, day, completed)
+    DB.cheatering(@user.id, day, completed)
     redirect '/'
+  end
+
+  get '/ip' do
+    {ip: @id}.to_json
+  end
+
+  get '/name' do
+    {name: @user.name}.to_json
   end
 end

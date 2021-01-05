@@ -45,6 +45,7 @@ const run = async () => {
     response = await fetch('/day_9_twister', {  credentials: "same-origin" })
     body = await response.json()
     let i = body.twister
+
     if (i == 4) {
         TWISTER.textContent = "-...  ...  --."
         return
@@ -95,10 +96,6 @@ const twistTongue = async (tongueTwister) => {
 
             // We may want to tweak the confidence number here if we get held up here in testing
             if (result.confidence > 0.8 && !tongueTwister.startsWith(result.transcript.toLowerCase())) {
-                console.log(result.confidence)
-                console.log(result.transcript)
-                console.log(tongueTwister.startsWith(result.transcript.toLowerCase()))
-                console.log(tongueTwister)
                 WORDS.textContent = result.transcript
                 data.recognition.stop()
                 return resolve('WRONG WORDS')

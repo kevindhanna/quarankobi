@@ -13,116 +13,98 @@ class DayController < Sinatra::Base
   use Auth
 
   before do
-    @id, = request.env.values_at :user
+    @user, = request.env.values_at :user
   end
 
   get '/day_1' do
-    day, reached, completed, name = DB.day(@id)
-
-    haml :day_1, locals: {name: name}
+    haml :day_1, locals: {name: @user.name}
   end
 
   get '/day_2' do
-    day, reached, completed, name = DB.day(@id)
-    redirect '/' if day <= 2
+    redirect '/' if @user.day <= 2
 
-    day_2(name, day > 2)
+    day_2(@user)
   end
 
   get '/day_3' do
-    day, reached, completed, name = DB.day(@id)
-    redirect '/' if day <= 3
+    redirect '/' if @user.day <= 3
 
-    day_3(@id, name, completed)
+    day_3(@user)
   end
 
   get '/day_4' do
-    day, reached, completed, name = DB.day(@id)
-    redirect '/' if day <= 4
+    redirect '/' if @user.day <= 4
 
-    erb :day_4, locals: {name: name}
+    erb :day_4, locals: {name: @user.name}
   end
 
   get '/day_5' do
-    day, reached, completed, name = DB.day(@id)
-    redirect '/' if day <= 5
+    redirect '/' if @user.day <= 5
 
-    day_5(name, day > 5)
+    day_5(@user)
   end
 
   get '/day_6' do
-    day, reached, completed, name = DB.day(@id)
-    redirect '/' if day <= 6
+    redirect '/' if @user.day <= 6
 
-    day_6(@id, name, params, '/day_6', completed)
+    day_6(@user, '/day_6', params)
   end
 
   get '/day_7' do
-    day, reached, completed, name = DB.day(@id)
-    redirect '/' if day <= 7
+    redirect '/' if @user.day <= 7
 
-    day_7(name, day > 7, params['answer'])
+    day_7(@user, params['answer'])
   end
 
   get '/day_8' do
-    day, reached, completed, name = DB.day(@id)
-    redirect '/' if day <= 8
+    redirect '/' if @user.day <= 8
 
-    erb :day_8, locals: {name: name, completed: true}
+    erb :day_8, locals: {name: @user.name, completed: @user.completed || @user.day > 8}
   end
 
   get '/day_9' do
-    day, reached, completed, name = DB.day(@id)
-    redirect '/' if day <= 9
+    redirect '/' if @user.day <= 9
 
-    erb :day_9, locals: {name: name, completed: true}
+    erb :day_9, locals: {name: @user.name, completed: @user.day_9_twister < 4}
   end
 
   get '/day_9_twister' do
-    {twister: DB.day_9(@id)}.to_json
+    puts @user.day_9_twister
+    {twister: @user.day_9_twister}.to_json
   end
 
   put '/day_9' do
-    current = DB.day_9(@id)
+    current = @user.day_9_twister
     # there are 3 tongue twisters in an array
     if current < 4
-      DB.set_day_9(@id, current + 1)
+      @user.day_9_twister += 1
     else
-      DB.complete(@id, 9)
+      @user.complete
     end
+    Peep.save(@user)
   end
 
   get '/day_11' do
-    day, reached, completed, name = DB.day(@id)
-    redirect '/' if day <= 11
+    redirect '/' if @user.day <= 11
 
-    day_11(name, true, params['code'])
+    day_11(@user, params['code'])
   end
 
   get '/day_11_history' do
-    DB.day_11_history(@id)
+    @user.day_11_history
   end
 
   put '/day_11_history' do
     request.body.rewind
     history = request.body.read
-    DB.set_day_11_history(@id, history)
+    @user.day_11_history = history
+    Peep.save(@user)
   end
 
   get '/day_12' do
-    day, reached, completed, name = DB.day(@id)
-    redirect '/' if day <= 11
+    redirect '/' if @user.day <= 11
 
-    day_12(@id, name, params['code'], completed)
-  end
-
-  get '/ip' do
-    {ip: @id}.to_json
-  end
-
-  get '/name' do
-    name = DB.name(@id)
-    {name: name}.to_json
+    day_12(@user, params['code'])
   end
 
 end
