@@ -16,6 +16,8 @@
           %td Day
           %td Competed?
           %td Reached
+          %td Day 3 count
+          %td Day 9 twister
       - days.each do |day|
         %tr
           %td= day[:id]
@@ -24,3 +26,5 @@
           %td= day[:day]
           %td= (day[:completed] ? "yes" : "no")
           %td= day[:reached].strftime('%Y-%m-%d %H:%M:%S')
+          %td= day[:day_3_count]
+          %td= day[:day_9_twister]

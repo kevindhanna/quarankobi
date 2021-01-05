@@ -1,15 +1,17 @@
 module Day3
-  def day_3(id, name, completed)
+  def day_3(user)
     # increment the visit counter
-    DB.visit(id)
+    user.day_3_count += 1
+    Peep.save(user)
     # get total visits
-    count = DB.visits(id)
     # number of refreshes until message + message.length
-    if count > 51 && !completed
-      DB.complete(id, 3)
+    if user.day_3_count > 51 && user.day == 3
+      user.complete
+      Peep.save(user)
     end
+
     message = "-.-./-.../...-/.-/--./-.--/.-./..-./..-.!".split("")
     message.push("did you get all that?")
-    haml :day_3, locals: {count: count, message: message, name: name}
+    haml :day_3, locals: {count: user.day_3_count, message: message, name: user.name}
   end
 end
