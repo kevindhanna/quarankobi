@@ -15,6 +15,7 @@ Sinatra::Base::configure :production, :development do
   set    :views,         'views'
   set    :erb, escape_html: true,
          layout_options: {views: 'views/layouts'}
+
 end
 
 use AdminController

@@ -67,6 +67,9 @@ class Db
 
   def cheatering(id, day, completed)
     query("UPDATE peeps SET day=#{day}, completed=#{completed}, reached='#{DateTime.now}' WHERE id='#{id}'")
+    if day == 9
+      set_day_9(id, 4)
+    end
   end
 
   def visits(id)
@@ -96,7 +99,6 @@ class Db
   end
 
   def complete(id, day)
-    puts "completeing #{day} for #{id}"
     query("UPDATE peeps SET completed=true WHERE id='#{id}' AND day=#{day}")
   end
 

@@ -1,5 +1,13 @@
+require "./controllers/helpers/auth"
+
 class AdminController < Sinatra::Base
   enable :sessions
+  use Auth
+
+  before do
+    @id, = request.env.values_at :user
+  end
+
   get '/reset' do
     DB.reset
     "DONE"
@@ -23,7 +31,7 @@ class AdminController < Sinatra::Base
   post '/cheatering' do
     day = params['day'].to_i;
     completed = params['completed'] == "true";
-    DB.cheatering(session['uuid'], day, completed)
+    DB.cheatering(@id, day, completed)
     redirect '/'
   end
 end
