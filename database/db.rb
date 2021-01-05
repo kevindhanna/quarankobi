@@ -55,11 +55,7 @@ class DB
   end
 
   def self.reset
-    @connection.query("DELETE FROM visits")
     @connection.query("DELETE FROM peeps")
-    @connection.query("DELETE FROM day_6_answers")
-    @connection.query("DELETE FROM day_11_history")
-    @connection.query("DELETE FROM day_9")
   end
 
   def self.cheatering(id, day, completed)
