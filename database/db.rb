@@ -46,7 +46,7 @@ class DB
         name: entry[:name],
         day: entry[:day],
         completed: (entry[:completed]),
-        reached: entry[:reached].is_a?(String) ? DateTime.parse(entry[:reached]) : :entry[:reached],
+        reached: entry[:reached].is_a?(String) ? DateTime.parse(entry[:reached]) : entry[:reached],
         day_3_count: entry[:day_3_count],
         day_9_twister: entry[:day_9_twister],
       }
