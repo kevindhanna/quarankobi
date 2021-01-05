@@ -61,6 +61,11 @@
         border-color: salmon;
         background-color: salmon;
     }
+    .swap {
+        border-color: blue;
+        background-color: blue;
+        color: white;
+    }
   </style>
 </head>
 <body>
@@ -121,6 +126,7 @@
             </td>
             <td>
               <button class="clear" id="clear">Fuck it all!</button>
+              <button class="swap" id="swap">Toggle dots</button>
             </td>
           </tr>
         </table>
@@ -168,7 +174,7 @@
       start: null,
       offset: null,
       paths: [],
-      ip: null
+      dots: true
   };
 
   function getPos(el) {
@@ -194,6 +200,7 @@
       data.canvas.addEventListener('mousedown', e => handleClick(e));
       document.getElementById("undo").addEventListener("mousedown", e => undo())
       document.getElementById("clear").addEventListener("mousedown", e => clear())
+      document.getElementById("swap").addEventListener("mousedown", e => swap())
   }
 
   const prepHistory = async () => {
@@ -251,6 +258,15 @@
   const undo = () => {
       data.paths.pop()
       drawPaths()
+  }
+
+  const swap = () => {
+      if (data.dots) {
+          document.getElementById("dots").style.backgroundImage = 'url("connectdots-white.png")'
+      } else {
+        document.getElementById("dots").style.backgroundImage = 'url("connectdots.png")'
+      }
+      data.dots = !data.dots
   }
 
   prepCanvas();
