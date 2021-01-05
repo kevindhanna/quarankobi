@@ -5,8 +5,8 @@ module Day2
       score = params['score'].delete(",")
     end
     score = score.to_i || nil
-    if score >= 15000
-      DB.complete(request.ip, 2)
+    if score >= 15000 && !completed
+      DB.complete(session['uuid'], 2)
       completed = true
     end
     haml :day_2, locals: {name: name, completed: completed, score: score}

@@ -13,11 +13,11 @@ data.synth = window.speechSynthesis;
 data.voice = data.synth.getVoices()[41]
 twisters = [
     "11 benevolent elephants",
+    "Peter Piper picked a peck of pickled peppers",
     "How can a clam cram in a clean cream can",
-    "Imagine an imaginary menagerie manager managing an imaginary menagerie",
     "Betty Botter bought some butter but said she the butter is bitter",
-    "She stood on the balcony inexplicably mimicking him hiccuping and amicably welcoming him in",
-]
+    "Imagine an imaginary menagerie manager managing an imaginary menagerie",
+ ]
 
 const buildUtterance = (text) => {
     let utterance = new SpeechSynthesisUtterance(text)
@@ -35,17 +35,17 @@ const speak = async (text) => {
 
 const run = async () => {
     GO.hidden = true
-    let response = await fetch('/name')
+    let response = await fetch('/name', {  credentials: "same-origin" })
     let body = await response.json()
     let name = "you anonymous person"
     if (body.name && body.name.length > 0) {
         name = body.name
     }
 
-    response = await fetch('/day_9_twister')
+    response = await fetch('/day_9_twister', {  credentials: "same-origin" })
     body = await response.json()
     let i = body.twister
-    if (i == 2) {
+    if (i == 4) {
         TWISTER.textContent = "-...  ...  --."
         return
     } else if (i == 0) {
@@ -67,8 +67,7 @@ const run = async () => {
             result = await twistTongue(twisters[i])
         }
         WORDS.style.color = "lightgreen"
-        console.log("putsing")
-        fetch('/day_9', {method: "PUT"})
+        fetch('/day_9', {method: "PUT", credentials: "same-origin"})
         await speak("Yay. Woohoo. Nice work. Good talking.")
         WORDS.style.color = "grey"
         WORDS.textContent = ""
@@ -86,7 +85,7 @@ const twistTongue = async (tongueTwister) => {
     return new Promise((resolve, reject) => {
 
         data.recognition.continuous = false;
-        data.recognition.lang = 'en-US';
+        data.recognition.lang = 'en-AU';
         data.recognition.interimResults = true;
         data.recognition.maxAlternatives = 1;
 
@@ -95,7 +94,11 @@ const twistTongue = async (tongueTwister) => {
             WORDS.textContent = result.transcript
 
             // We may want to tweak the confidence number here if we get held up here in testing
-            if (result.confidence > 0.7 && !tongueTwister.startsWith(result.transcript.toLowerCase())) {
+            if (result.confidence > 0.8 && !tongueTwister.startsWith(result.transcript.toLowerCase())) {
+                console.log(result.confidence)
+                console.log(result.transcript)
+                console.log(tongueTwister.startsWith(result.transcript.toLowerCase()))
+                console.log(tongueTwister)
                 WORDS.textContent = result.transcript
                 data.recognition.stop()
                 return resolve('WRONG WORDS')
@@ -103,7 +106,7 @@ const twistTongue = async (tongueTwister) => {
                 WORDS.textContent = result.transcript
                 data.recognition.stop()
                 return resolve('GREAT')
-            } else if (result[0]?.isFinal) {
+            } else if (result[0].isFinal) {
                 WORDS.textContent = result.transcript
                 return resolve('STOPPED EARLY')
             }

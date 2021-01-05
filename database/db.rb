@@ -1,4 +1,5 @@
 require 'date'
+require 'securerandom'
 require_relative './setup'
 
 class Db
@@ -23,6 +24,7 @@ class Db
     results = query("SELECT * from peeps")
     results = results.map do |entry|
       {
+        id: entry['id'],
         ip: entry['ip'],
         name: entry['name'],
         day: entry['day'],
@@ -33,6 +35,28 @@ class Db
     results
   end
 
+  def id(ip)
+    results = query("SELECT id FROM peeps WHERE ip ='#{ip}'")
+    results.each do |r|
+      return r['id']
+    end
+
+    # if we didn't return above we have to create a new peep
+    create(ip)
+    id(ip)
+  end
+
+  def ip(id)
+    results = query("SELECT ip FROM peeps WHERE id ='#{id}'")
+    results.each do |r|
+      return r['ip']
+    end
+  end
+
+  def update_ip(id, ip)
+    query("UPDATE peeps SET ip='#{ip}' WHERE id ='#{id}'")
+  end
+
   def reset
     query("DELETE FROM visits")
     query("DELETE FROM peeps")
@@ -41,97 +65,94 @@ class Db
     query("DELETE FROM day_9")
   end
 
-  def cheatering(ip, day, completed)
-    query("UPDATE peeps SET day=#{day}, completed=#{completed}, reached='#{DateTime.now}' WHERE ip='#{ip}'")
+  def cheatering(id, day, completed)
+    query("UPDATE peeps SET day=#{day}, completed=#{completed}, reached='#{DateTime.now}' WHERE id='#{id}'")
   end
 
-  def visits(ip)
-    results = query("SELECT count FROM visits WHERE ip='#{ip}'")
+  def visits(id)
+    results = query("SELECT count FROM visits WHERE id='#{id}'")
     results.each do |r|
       return r['count'].to_i
     end
   end
 
-  def visit(ip)
-    if !visited?(ip)
-      query("INSERT INTO visits (ip, count) VALUES ('#{ip}', 0)")
+  def visit(id)
+    if !visited?(id)
+      query("INSERT INTO visits (id, count) VALUES ('#{id}', 0)")
     end
-    query("UPDATE visits SET count=count+1 WHERE ip='#{ip}'")
+    query("UPDATE visits SET count=count+1 WHERE id='#{id}'")
   end
 
-  def day(ip)
-    if !played?(ip)
-      add_ip(ip)
-    end
-
-    results = query("SELECT day, reached, completed, name FROM peeps WHERE ip='#{ip}'")
+  def day(id)
+    results = query("SELECT day, reached, completed, name FROM peeps WHERE id='#{id}'")
     results.each do |r|
       return [r['day'], r['reached'], (r['completed'] == 1), r['name']]
     end
   end
 
-  def next_day(ip)
+  def next_day(id)
     date = DateTime.now
-    query("UPDATE peeps SET day=day+1, completed=false, reached='#{date}' WHERE ip = '#{ip}'")
+    query("UPDATE peeps SET day=day+1, completed=false, reached='#{date}' WHERE id = '#{id}'")
   end
 
-  def complete(ip, day)
-    query("UPDATE peeps SET completed=true WHERE ip='#{ip}' AND day=#{day}")
+  def complete(id, day)
+    puts "completeing #{day} for #{id}"
+    query("UPDATE peeps SET completed=true WHERE id='#{id}' AND day=#{day}")
   end
 
-  def set_name(ip, name)
-    query("UPDATE peeps SET name='#{name}' WHERE ip='#{ip}'")
+  def set_name(id, name)
+    query("UPDATE peeps SET name='#{name}' WHERE id='#{id}'")
   end
 
-  def set_day_6_answers(ip, answers)
-    if !answered?(ip)
-      query("INSERT INTO day_6_answers (ip, answers) VALUES ('#{ip}', '#{answers}')")
+  def set_day_6_answers(id, answers)
+    if !answered?(id)
+      query("INSERT INTO day_6_answers (id, answers) VALUES ('#{id}', '#{answers}')")
     else
-      query("UPDATE day_6_answers SET answers='#{answers}' where ip='#{ip}'")
+      query("UPDATE day_6_answers SET answers='#{answers}' where id='#{id}'")
     end
   end
 
-  def day_6_answers(ip)
-    result = query("SELECT answers FROM day_6_answers WHERE ip='#{ip}'")
+  def day_6_answers(id)
+    result = query("SELECT answers FROM day_6_answers WHERE id='#{id}'")
     result.each do |r|
       return r['answers']
     end
     ""
   end
 
-  def set_day_11_history(ip, history)
-    if !has_history(ip)
-      query("INSERT INTO day_11_history (ip, history) VALUES ('#{ip}', '#{history}')")
+  def set_day_11_history(id, history)
+    if !has_history(id)
+      query("INSERT INTO day_11_history (id, history) VALUES ('#{id}', '#{history}')")
     end
-    query("UPDATE day_11_history SET history='#{history}' WHERE ip='#{ip}'")
+    query("UPDATE day_11_history SET history='#{history}' WHERE id='#{id}'")
   end
 
-  def day_11_history(ip)
-    results =  query("SELECT history FROM day_11_history WHERE ip='#{ip}'")
+  def day_11_history(id)
+    results =  query("SELECT history FROM day_11_history WHERE id='#{id}'")
     results.each do |r|
       return r['history']
     end
     "{\"history\": []}"
   end
 
-  def name(ip)
-    result = query("SELECT name FROM peeps WHERE ip='#{ip}'")
+  def name(id)
+    result = query("SELECT name FROM peeps WHERE id='#{id}'")
     result.each do |r|
       return r['name']
     end
   end
 
-  def set_day_9(ip, twister)
-      query("UPDATE day_9 SET twister=#{twister} where ip='#{ip}'")
+  def set_day_9(id, twister)
+      query("UPDATE day_9 SET twister=#{twister} where id='#{id}'")
   end
 
-  def day_9(ip)
-    if !has_day_9?(ip)
-      query("INSERT INTO day_9 (ip, twister) VALUES ('#{ip}', 0)")
+  def day_9(id)
+    if !has_day_9?(id)
+      query("INSERT INTO day_9 (id, twister) VALUES ('#{id}', 0)")
       return 1
     end
 
-    result = query("SELECT twister FROM day_9 where ip='#{ip}'")
+    result = query("SELECT twister FROM day_9 where id='#{id}'")
     result.each do |r|
       return r['twister']
     end
@@ -139,51 +160,51 @@ class Db
 
   private
 
-  def add_ip(ip)
+  def create(ip)
     date = DateTime.now
-    query("INSERT INTO peeps (ip, day, completed, reached) VALUES ('#{ip}', 1, false, '#{date}')")
+    query("INSERT INTO peeps (id, ip, day, completed, reached) VALUES ('#{SecureRandom.uuid}', '#{ip}', 1, false, '#{date}')")
   end
 
-  def played?(ip)
-    result = query("SELECT ip FROM peeps WHERE ip = '#{ip}'")
+  def played?(id)
+    result = query("SELECT id FROM peeps WHERE id = '#{id}'")
     result.each do |r|
-      return true if r['ip'] == ip
+      return true if r['id'] == id
     end
 
     false
   end
 
-  def visited?(ip)
-    result = query("SELECT ip FROM visits WHERE ip = '#{ip}'")
+  def visited?(id)
+    result = query("SELECT id FROM visits WHERE id = '#{id}'")
     result.each do |r|
-      return true if r['ip'] == ip
+      return true if r['id'] == id
     end
 
     false
   end
 
-  def answered?(ip)
-    result = query("SELECT ip FROM day_6_answers WHERE ip = '#{ip}'")
+  def answered?(id)
+    result = query("SELECT id FROM day_6_answers WHERE id = '#{id}'")
     result.each do |r|
-      return true if r['ip'] == ip
+      return true if r['id'] == id
     end
 
     false
   end
 
-  def has_history(ip)
-    result = query("SELECT ip FROM day_11_history WHERE ip = '#{ip}'")
+  def has_history(id)
+    result = query("SELECT id FROM day_11_history WHERE id = '#{id}'")
     result.each do |r|
-      return true if r['ip'] == ip
+      return true if r['id'] == id
     end
 
     false
   end
 
-  def has_day_9?(ip)
-    result = query("SELECT ip FROM day_9 WHERE ip = '#{ip}'")
+  def has_day_9?(id)
+    result = query("SELECT id FROM day_9 WHERE id = '#{id}'")
     result.each do |r|
-      return true if r['ip'] == ip
+      return true if r['id'] == id
     end
 
     false

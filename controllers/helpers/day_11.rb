@@ -1,7 +1,7 @@
 module Day11
   def day_11(name, completed, code)
-    if code && code.delete(' ').delete(',').downcase == 'bmo'
-      DB.complete(request.ip, 11)
+    if code && code.delete(' ').delete(',').downcase == 'bmo' && !completed
+      DB.complete(session['uuid'], 11)
       completed = true
     end
 

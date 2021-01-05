@@ -1,4 +1,5 @@
 class AdminController < Sinatra::Base
+  enable :sessions
   get '/reset' do
     DB.reset
     "DONE"
@@ -11,7 +12,7 @@ class AdminController < Sinatra::Base
   end
 
   post '/set_name' do
-    DB.set_name(request.ip, params['Name'])
+    DB.set_name(session['uuid'], params['Name'])
     redirect '/'
   end
 
@@ -22,7 +23,7 @@ class AdminController < Sinatra::Base
   post '/cheatering' do
     day = params['day'].to_i;
     completed = params['completed'] == "true";
-    DB.cheatering(request.ip, day, completed)
+    DB.cheatering(session['uuid'], day, completed)
     redirect '/'
   end
 end

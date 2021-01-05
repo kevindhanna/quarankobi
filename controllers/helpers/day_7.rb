@@ -3,8 +3,8 @@ module Day7
     if answer
       answer = answer.delete(" ").delete("/").delete(",").downcase
     end
-    if answer == "lbh"
-      DB.complete(request.ip, 7)
+    if answer == "lbh" && !completed
+      DB.complete(session['uuid'], 7)
       completed = true
     end
     erb :day_7, locals: {name: name, completed: completed}

@@ -197,11 +197,7 @@
   }
 
   const prepHistory = async () => {
-      let response = await fetch('/ip')
-      let body = await response.json()
-      data.ip = body.ip
-
-      response = await fetch('/day_11_history')
+      let response = await fetch('/day_11_history', {  credentials: "same-origin" })
       body = await response.json()
       data.paths = body.history
       drawPaths()
@@ -232,7 +228,8 @@
   const saveHistory = async (history) => {
       fetch('/day_11_history', {
           method: 'PUT',
-          body: JSON.stringify({history: history})
+          body: JSON.stringify({history: history}),
+          credentials: "same-origin"
       })
   }
 

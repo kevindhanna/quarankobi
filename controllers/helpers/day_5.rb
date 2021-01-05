@@ -4,9 +4,9 @@ module Day5
     if kj
       kj = params['kj'].delete(",")
     end
-    kj = kj.to_i || nilp
-    if kj == 5710
-      DB.complete(request.ip, 5)
+    kj = kj.to_i || nil
+    if kj == 5710 && !completed
+      DB.complete(session['uuid'], 5)
       completed = true
     end
     erb :day_5, locals: {name: name, completed: completed, kj: kj}

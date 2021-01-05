@@ -10,6 +10,7 @@
     %table
       %tr
         %tr
+          %td ID
           %td IP
           %td Name
           %td Day
@@ -17,6 +18,7 @@
           %td Reached
       - days.each do |day|
         %tr
+          %td= day[:id]
           %td= day[:ip]
           %td= day[:name]
           %td= day[:day]

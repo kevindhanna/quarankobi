@@ -1,22 +1,22 @@
 module Day6
   CORRECT = {"1.1"=>false, "1.2"=>true, "1.3"=>false, "1.4"=>false, "2.1"=>true, "2.2"=>false, "2.3"=>true, "3.1"=>false, "3.2"=>true, "4.1"=>true, "4.2"=>true, "4.3"=>false, "4.4"=>true, "5.1"=>false, "5.2"=>false, "5.3"=>true}
 
-  def day_6(ip, name, params, redirect_url)
+  def day_6(id, name, params, redirect_url, completed)
     answers = {}
     # see if they've visited before, if so populate answers for them
     # because I'm nice
     if params.length == 0
-      params = DB.day_6_answers(request.ip)
+      params = DB.day_6_answers(id)
       if params.length > 0
         redirect "#{redirect_url}?#{params}"
       end
     else
-      DB.set_day_6_answers(ip, request.query_string)
+      DB.set_day_6_answers(id, request.query_string)
       result, answers = validate_answers(params)
     end
 
-    if result
-      DB.complete(request.ip, 6)
+    if result && !completed
+      DB.complete(id, 6)
     end
 
     erb :day_6, locals: {name: name, submitted: params.length > 0, result: result, answers: answers}

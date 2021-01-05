@@ -9,6 +9,8 @@ Dotenv.load
 DB = Db.new
 Sinatra::Base::configure :production, :development do
   enable :logging
+  enable :sessions
+  set :session_secret, ENV.fetch('SESSION_SECRET')
   set    :public_folder, 'public'
   set    :views,         'views'
   set    :erb, escape_html: true,
