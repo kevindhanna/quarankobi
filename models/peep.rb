@@ -93,8 +93,6 @@ class Peep
       props = {}
       peep.instance_variables.each do |v|
         val = peep.instance_variable_get v
-        puts val
-        puts val.class
         if val.is_a?(String) || val.is_a?(DateTime) || val.is_a?(Time)
           val = self.stringify(val)
         end
