@@ -20,7 +20,8 @@ class DbConnection
   private
 
   def run_migrations
-    migrations = Dir.glob("./database/migrations/*.rb")
+    migrations = Dir.glob("./database/migrations/*.rb").sort
+    puts migrations
 
     begin
       @client.query("create table migrations (name varchar(100))")

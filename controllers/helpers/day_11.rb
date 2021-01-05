@@ -5,6 +5,6 @@ module Day11
       Peep.save(user)
     end
 
-    erb :day_11, locals: {name: @user.name, completed: user.day > 11 || user.completed, code: code}
+    erb :day_11, locals: {name: user.name, completed: user.day > 11 || user.completed, code: code}
   end
 end

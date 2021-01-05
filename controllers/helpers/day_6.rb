@@ -6,24 +6,22 @@ module Day6
     # see if they've visited before, if so populate answers for them
     # because I'm nice
     if params.length == 0
-      # params = DB.day_6_answers(@user.id)
-      params = @user.day_6_answers
+      params = user.day_6_answers
       if params.length > 0
         redirect "#{redirect_url}?#{params}"
       end
     else
-      # DB.set_day_6_answers(@user.id, request.query_string)
-      @user.day_6_answers = request.query_string
+      user.day_6_answers = request.query_string
       Peep.save(user)
       result, answers = validate_answers(params)
     end
 
-    if result && @user.day == 6
-      @user.complete
+    if result && user.day == 6
+      user.complete
       Peep.save(user)
     end
 
-    erb :day_6, locals: {name: @user.name, submitted: params.length > 0, result: result, answers: answers}
+    erb :day_6, locals: {name: user.name, submitted: params.length > 0, result: result, answers: answers}
   end
 
   def validate_answers(answers)
