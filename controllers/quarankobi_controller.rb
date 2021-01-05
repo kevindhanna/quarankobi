@@ -16,6 +16,7 @@ class QuaranKobiController < Sinatra::Base
 
   before do
     @id, = request.env.values_at :user
+    @env = ENV['RACK_ENV']
   end
 
   get '/' do
@@ -23,10 +24,10 @@ class QuaranKobiController < Sinatra::Base
     now = DateTime.now
 
     # if we've been on the current day for most of a day, we go up a day
-    if ENV['RACK_ENV'] == "development"
-      difference = TimeDifference.between(now, reached).in_seconds
-    else
+    if @env == "production"
       difference = TimeDifference.between(now, reached).in_hours
+    else
+      difference = TimeDifference.between(now, reached).in_seconds
     end
     if difference > 16 && completed && day != 9
       DB.next_day(@id)
