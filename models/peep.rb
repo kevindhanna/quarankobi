@@ -44,8 +44,8 @@ class Peep
     end
   end
 
-  attr_reader :id, :ip, :day, :completed, :reached
-  attr_accessor :name, :day_3_count, :day_6_answers, :day_9_twister, :day_11_history
+  attr_reader :id, :day, :completed, :reached
+  attr_accessor :name, :day_3_count, :day_6_answers, :day_9_twister, :day_11_history, :ip
 
   def initialize(id:,
                  ip:,
