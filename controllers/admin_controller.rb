@@ -1,7 +1,11 @@
 require "./controllers/helpers/auth"
 
 class AdminController < Sinatra::Base
-  enable :sessions
+  # enable :sessions
+  use Rack::Session::Cookie, :key => 'rack.session',
+                            :domain => ENV['COOKIE_DOMAIN'],
+                            :expire_after => 2592000, # In seconds
+                            :secret => ENV['SESSION_SECRET']
   use Auth
 
   before do

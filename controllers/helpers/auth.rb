@@ -8,9 +8,9 @@ class Auth
     ip = env['REMOTE_ADDR']
     id = session['uuid']
     puts "ip is #{ip}"
-    puts "id os #{id}"
+    puts "id is #{id}"
     if id
-      user = Peep.find_buy_id(id)
+      user = Peep.find_by_id(id)
       if user.ip != ip
         user.ip = ip
         Peep.save(user)
@@ -26,6 +26,9 @@ class Auth
       end
     end
 
+    if user
+      session['uuid'] = user.id
+    end
     @app.call env
   end
 end
