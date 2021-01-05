@@ -12,7 +12,7 @@ module DBSetup
   end
 
   def run_migrations(client)
-    migrations = Dir.glob("./database/migrations/*.rb")
+    migrations = Dir.glob("./database/migrations/*.rb").sort
 
     maybe_create_migrations(client)
 
