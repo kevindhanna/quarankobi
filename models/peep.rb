@@ -29,7 +29,7 @@ class Peep
              completed: false,
              reached: DateTime.now,
              day_3_count: 0,
-             day_6_answers: "",
+             day_6_answers: nil,
              day_9_twister: 0,
              day_11_history: DEFAULT_DAY_11_HISTORY)
   end
