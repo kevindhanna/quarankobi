@@ -55,7 +55,9 @@ class DB
   end
 
   def self.reset
-    @connection.query("DELETE FROM peeps")
+    if ENV['RACK_ENV'] != "production"
+      @connection.query("DELETE FROM peeps")
+    end
   end
 
   def self.cheatering(id, day, completed)
