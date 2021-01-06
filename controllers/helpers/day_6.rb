@@ -7,7 +7,7 @@ module Day6
     # because I'm nice
     if params.length == 0
       params = user.day_6_answers
-      if params.length > 0
+      if params && params.length > 0
         redirect "#{redirect_url}?#{params}"
       end
     else
@@ -21,7 +21,7 @@ module Day6
       Peep.save(user)
     end
 
-    erb :day_6, locals: {name: user.name, submitted: params.length > 0, result: result, answers: answers}
+    erb :day_6, locals: {name: user.name, result: result, answers: answers}
   end
 
   def validate_answers(answers)
