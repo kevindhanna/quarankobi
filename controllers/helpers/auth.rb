@@ -7,8 +7,7 @@ class Auth
     session = env['rack.session']
     ip = env['REMOTE_ADDR']
     id = session['uuid']
-    puts "ip is #{ip}"
-    puts "id is #{id}"
+
     if id
       user = Peep.find_by_id(id)
       if user.ip != ip

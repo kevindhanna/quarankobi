@@ -10,11 +10,20 @@ class DbConnection
     run_migrations
   end
 
-  def query(sql, sleep_count = 0)
-    @client.query(sql, {
-        symbolize_keys: true,
-        cast_booleans: true
-      })
+  def query(sql)
+    begin
+      @client.query(sql, {
+                      symbolize_keys: true,
+                      cast_booleans: true
+                    })
+    rescue Mysql2::Error => e
+      #sql is slow
+      if e.message.include? "This connection is in use by"
+        sleep(1.0/24.0)
+        query(sql)
+      end
+      raise e
+    end
   end
 
   private
