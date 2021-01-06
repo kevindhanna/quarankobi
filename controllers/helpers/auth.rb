@@ -20,7 +20,7 @@ class Auth
         # do nothing
       end
     end
-    if !id && !user
+    if !id && !env[:user]
       begin
         env[:user] = Peep.find_by_ip(ip)
       rescue PeepNotFound
