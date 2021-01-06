@@ -9,11 +9,11 @@ require_relative './helpers/day_12'
 
 class DayController < Sinatra::Base
   include Day2, Day3, Day5, Day6, Day7, Day11, Day12
-  enable :sessions
-  # use Rack::Session::Cookie, :key => 'rack.session',
-  #                           :domain => ENV['COOKIE_DOMAIN'],
-  #                           :expire_after => 2592000, # In seconds
-  #                           :secret => ENV['SESSION_SECRET']
+  # enable :sessions
+  use Rack::Session::Cookie, :key => 'rack.session',
+                            :domain => ENV['COOKIE_DOMAIN'],
+                            :expire_after => 2592000, # In seconds
+                            :secret => ENV['SESSION_SECRET']
   use Auth
 
   before do
