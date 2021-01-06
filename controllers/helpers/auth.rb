@@ -8,31 +8,42 @@ class Auth
     ip = env['REMOTE_ADDR']
     id = session['uuid']
 
+    puts "id is #{id}"
+    puts "ip is #{ip}"
+
     if id
       begin
         user = Peep.find_by_id(id)
+        puts "Got a user by ID"
         if user.ip != ip
           user.ip = ip
           Peep.save(user)
+          puts "updated IP"
         end
         env[:user] = user
       rescue PeepNotFound
+        puts "couldn't find by id"
         # do nothing
       end
     end
     if !id && !env[:user]
       begin
         env[:user] = Peep.find_by_ip(ip)
+        puts "found by ip"
       rescue PeepNotFound
         user = Peep.create(ip)
         Peep.save(user)
         env[:user] = user
+        puts "created a new one"
       end
     end
 
-    if user
-      session['uuid'] = user.id
+    if !env[:user]
+      raise "No user"
+    else
+      session['uuid'] = env[:user].id
     end
+
     @app.call env
   end
 end
