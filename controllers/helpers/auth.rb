@@ -29,7 +29,7 @@ class Auth
 
     if !env[:user]
       begin
-        user = Peep.find_by_user_agent(user_agent)
+        env[:user] = Peep.find_by_user_agent(user_agent)
         puts "found by agent"
       rescue PeepNotFound
         puts "couldn't find by ua"
