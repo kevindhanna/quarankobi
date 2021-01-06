@@ -9,13 +9,18 @@ class Auth
     id = session['uuid']
 
     if id
-      user = Peep.find_by_id(id)
-      if user.ip != ip
-        user.ip = ip
-        Peep.save(user)
+      begin
+        user = Peep.find_by_id(id)
+        if user.ip != ip
+          user.ip = ip
+          Peep.save(user)
+        end
+        env[:user] = user
+      rescue PeepNotFound
+        # do nothing
       end
-      env[:user] = user
-    else
+    end
+    if !id && !user
       begin
         env[:user] = Peep.find_by_ip(ip)
       rescue PeepNotFound
