@@ -20,6 +20,7 @@ class QuaranKobiController < Sinatra::Base
 
   before do
     @user, = request.env.values_at :user
+    session['uuid'] = @user.id
   end
 
   get '/' do

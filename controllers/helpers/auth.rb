@@ -7,7 +7,7 @@ class Auth
     session = env['rack.session']
     ip = env['REMOTE_ADDR']
     id = session['uuid']
-
+    user_agent = env['HTTP_USER_AGENT']
     puts "id is #{id}"
     puts "ip is #{ip}"
 
@@ -26,12 +26,23 @@ class Auth
         # do nothing
       end
     end
-    if !id && !env[:user]
+
+    if !env[:user]
+      begin
+        user = Peep.find_by_user_agent(user_agent)
+        puts "found by agent"
+      rescue PeepNotFound
+        puts "couldn't find by ua"
+        # do nothing
+      end
+    end
+
+    if !env[:user]
       begin
         env[:user] = Peep.find_by_ip(ip)
         puts "found by ip"
       rescue PeepNotFound
-        user = Peep.create(ip)
+        user = Peep.create(ip, user_agent)
         Peep.save(user)
         env[:user] = user
         puts "created a new one"
@@ -41,6 +52,10 @@ class Auth
     if !env[:user]
       raise "No user"
     else
+      user = env[:user]
+      user.ip = ip
+      user.user_agent = user_agent
+      Peep.save(user)
       session['uuid'] = env[:user].id
     end
 

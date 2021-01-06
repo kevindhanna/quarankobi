@@ -21,7 +21,15 @@ class Peep
     Peep.new(**params)
   end
 
-  def self.create(ip)
+  def self.find_by_user_agent(ua)
+    params = @@repository.find(TABLE, "user_agent", self.stringify(ua))
+    if params == nil
+      raise PeepNotFound.new
+    end
+    Peep.new(**params)
+  end
+
+  def self.create(ip, user_agent)
     Peep.new(id: SecureRandom.uuid,
              ip: ip,
              name: nil,
@@ -31,7 +39,8 @@ class Peep
              day_3_count: 0,
              day_6_answers: nil,
              day_9_twister: 0,
-             day_11_history: DEFAULT_DAY_11_HISTORY)
+             day_11_history: DEFAULT_DAY_11_HISTORY,
+             user_agent: user_agent)
   end
 
   def self.save(peep)
@@ -45,7 +54,7 @@ class Peep
   end
 
   attr_reader :id, :day, :completed, :reached
-  attr_accessor :name, :day_3_count, :day_6_answers, :day_9_twister, :day_11_history, :ip
+  attr_accessor :name, :day_3_count, :day_6_answers, :day_9_twister, :day_11_history, :ip, :user_agent
 
   def initialize(id:,
                  ip:,
@@ -56,7 +65,8 @@ class Peep
                  day_3_count:,
                  day_6_answers:,
                  day_9_twister:,
-                 day_11_history:)
+                 day_11_history:,
+                 user_agent:)
     @id = id
     @ip = ip
     @name = name
@@ -67,6 +77,7 @@ class Peep
     @day_6_answers = day_6_answers
     @day_9_twister = day_9_twister
     @day_11_history = day_11_history
+    @user_agent = user_agent
   end
 
   def complete
