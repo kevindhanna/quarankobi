@@ -2,10 +2,11 @@ module Day10
   def day_10(user, code)
     expected_morse = "-.-- ...- ... .-. / ...- ..-. / -.-. -... ...- .- --. -.-- .-. ..-. ..-. / --- .... --. / -. --. / -.-- .-. -. ..-. --. / .-.. -... .... / -. . .-. / -... .... --.".delete(" ").delete('/')
     expected_letters = "YVSR VF CBVAGYRFF OHG NG YRNFG LBH NER BHG".delete(" ").downcase
-    code_morse = code.delete(" ").delete("/").delete("%2F").downcase
-    code_letters = code.delete(" ").delete("/").downcase
-    puts code
-    puts expected_letters
+    if code
+      code_morse = code.delete(" ").delete("/").delete("%2F").downcase
+      code_letters = code.delete(" ").delete("/").downcase
+    end
+
     correct = code_morse == expected_morse || code_letters == expected_letters
     if correct && user.day == 10
       user.complete
