@@ -33,7 +33,7 @@ class QuaranKobiController < Sinatra::Base
       difference = TimeDifference.between(now, @user.reached).in_seconds
     end
 
-    if difference > 16 && @user.completed && @user.day != 9
+    if difference > 16 && @user.completed && @user.day != 11
       @user.next
       Peep.save(@user)
       redirect '/'
