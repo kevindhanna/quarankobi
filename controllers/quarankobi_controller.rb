@@ -6,11 +6,11 @@ require_relative './helpers/day_3'
 require_relative './helpers/day_5'
 require_relative './helpers/day_6'
 require_relative './helpers/day_7'
+require_relative './helpers/day_10'
 require_relative './helpers/day_11'
-require_relative './helpers/day_12'
 
 class QuaranKobiController < Sinatra::Base
-  include Day2, Day3, Day5, Day6, Day7, Day11, Day12
+  include Day2, Day3, Day5, Day6, Day7, Day10, Day11
   # enable :sessions
   use Rack::Session::Cookie, :key => 'rack.session',
                             :domain => ENV['COOKIE_DOMAIN'],
@@ -66,14 +66,13 @@ class QuaranKobiController < Sinatra::Base
         @user.complete
         Peep.save(@user)
       end
-
       erb :day_8, locals: {name: @user.name, completed: @user.completed}
     when 9
       erb :day_9, locals: {name: @user.name, completed: @user.completed}
+    when 10
+      day_10(@user, params['code'])
     when 11
       day_11(@user, params['code'])
-    when 12
-      day_12(@user, params['code'])
     else
       "Something is bad."
     end

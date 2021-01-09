@@ -4,11 +4,11 @@ require_relative './helpers/day_3'
 require_relative './helpers/day_5'
 require_relative './helpers/day_6'
 require_relative './helpers/day_7'
+require_relative './helpers/day_10'
 require_relative './helpers/day_11'
-require_relative './helpers/day_12'
 
 class DayController < Sinatra::Base
-  include Day2, Day3, Day5, Day6, Day7, Day11, Day12
+  include Day2, Day3, Day5, Day6, Day7, Day10, Day11
   # enable :sessions
   use Rack::Session::Cookie, :key => 'rack.session',
                             :domain => ENV['COOKIE_DOMAIN'],
@@ -89,6 +89,12 @@ class DayController < Sinatra::Base
     Peep.save(@user)
   end
 
+  get '/day_10' do
+    redirect '/' if @user.day <= 11
+
+    day_12(@user, params['code'])
+  end
+
   get '/day_11' do
     redirect '/' if @user.day <= 11
 
@@ -104,12 +110,6 @@ class DayController < Sinatra::Base
     history = request.body.read
     @user.day_11_history = history
     Peep.save(@user)
-  end
-
-  get '/day_12' do
-    redirect '/' if @user.day <= 11
-
-    day_12(@user, params['code'])
   end
 
 end
