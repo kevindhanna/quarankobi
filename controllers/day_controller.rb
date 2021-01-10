@@ -92,7 +92,7 @@ class DayController < Sinatra::Base
   get '/day_10' do
     redirect '/' if @user.day <= 11
 
-    day_12(@user, params['code'])
+    day_10(@user, params['code'])
   end
 
   get '/day_11' do
@@ -112,4 +112,9 @@ class DayController < Sinatra::Base
     Peep.save(@user)
   end
 
+  get '/day_12' do
+    redirect '/' if @user.day <= 12
+
+    erb :day_12, locals: {completed: true, name: @user.name}
+  end
 end

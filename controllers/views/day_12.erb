@@ -1,0 +1,194 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>QuaranKobi</title>
+  <style>
+    body {
+        background-color: aliceblue;
+        font-family: arial;
+    }
+    .form {
+        text-align: center
+    }
+    .content {
+        padding-left: 20vw;
+        padding-right: 20vw;
+        padding-top: 5vh;
+    }
+    .home_link {
+        width: 10vw;
+        border-radius: 20px
+    }
+    .help {
+        background-color: yellow
+    }
+    .header {
+        width: 10vw;
+        float: left;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <a href="/">
+      <img class="home_link" src="homebutton.png">
+    </a>
+    <% if !name %>
+    <form action="/set_name" method="POST">
+      <label for="Name">Hey tell me your name</label>
+      <input id="Name" name="Name" type="text"/>
+      <br>
+      <input value="go on then" type="submit">
+    </form>
+    <% end %>
+    <div class="back_links">
+      <a href="/day_1">day 1</a></br>
+      <a href="/day_2">day 2</a></br>
+      <a href="/day_3">day 3</a></br>
+      <a href="/day_4">day 4</a></br>
+      <a href="/day_5">day 5</a></br>
+      <a href="/day_6">day 6</a></br>
+      <a href="/day_7">day 7</a></br>
+      <a href="/day_8">day 8</a></br>
+      <a href="/day_9">day 9</a></br>
+      <a href="/day_10">day 10</a></br>
+      <a href="/day_11">day 11</a></br>
+      <a class="help" href="mailto:helpmequarankobi@hotmail.com">help!</a></br>
+    </div>
+  </div>
+  <div class="content">
+    <% if completed %>
+    <h1 style="text-align: center; padding-top: 5vh;">
+      Correct! <br><br>
+      -... &nbsp; ...
+    </h1>
+    <% else %>
+    <h2>
+      Hospital sucks, what can we say? We honestly didn’t think it’d turn out this way.
+      <br>
+      Now you’re in the leper ward, your mind needs to roam, so why not go visit a little island home?
+      <br>
+      Perhaps you can fly to visit a friend, where the beach has a dodo and you can unwind and zen.
+      <br>
+      Joy is just a short hop-skip away to a little island Nook, where you can do lots of e-chores, like pick fruit and cook.
+      <br>
+      You can lay on the beach and have your mind whisked away from the current world of boiled-potato and grey.
+    </h2>
+    <div class="form">
+      <form method="GET">
+        <input type="text" name="code"/>
+        <input class="submit" type="submit" value="hmmmm"/>
+      </form>
+      <img src="https://i.imgur.com/bSsn0rN.jpg">
+    </div>
+    <% end %>
+</body>
+<script>
+  let data = {
+      canvas: null,
+      ctx: null,
+      start: null,
+      offset: null,
+      paths: [],
+      dots: true
+  };
+
+  function getPos(el) {
+    for (var lx=0, ly=0;
+         el != null;
+         lx += el.offsetLeft, ly += el.offsetTop, el = el.offsetParent);
+    return {x: lx,y: ly};
+  }
+
+  const prepCanvas = () => {
+      let res = window.devicePixelRatio || 1;
+      let scale = 1 / res;
+      data.canvas = document.getElementById('dots');
+      data.offset = getPos(data.canvas);
+
+      data.ctx = data.canvas.getContext('2d');
+
+      let offset = getPos(data.canvas);
+      data.canvas.width = window.innerWidth * 0.4 * res;
+      data.canvas.height = window.innerHeight * 0.7 * res;
+
+      data.ctx.scale(res, res);
+      data.canvas.addEventListener('mousedown', e => handleClick(e));
+      document.getElementById("undo").addEventListener("mousedown", e => undo())
+      document.getElementById("clear").addEventListener("mousedown", e => clear())
+      document.getElementById("swap").addEventListener("mousedown", e => swap())
+  }
+
+  const prepHistory = async () => {
+      let response = await fetch('/day_11_history', {  credentials: "same-origin" })
+      body = await response.json()
+      data.paths = body.history
+      drawPaths()
+  }
+
+  const handleClick = (e) => {
+      let point = {x: e.pageX - data.offset.x, y: e.pageY - data.offset.y}
+      if (data.start) {
+          data.paths.push({start: data.start, end: point});
+          drawPaths()
+          saveHistory(data.paths)
+          data.start = null
+      } else {
+          data.start = point
+      }
+  }
+
+  const drawLine = (start, end) => {
+      data.ctx.beginPath();
+      data.ctx.lineWidth = 5;
+      data.ctx.strokeStyle = '#00897B';
+      data.ctx.moveTo(start.x, start.y);
+      data.ctx.lineTo(end.x, end.y);
+      data.ctx.stroke();
+      data.ctx.closePath();
+  }
+
+  const saveHistory = async (history) => {
+      fetch('/day_11_history', {
+          method: 'PUT',
+          body: JSON.stringify({history: history}),
+          credentials: "same-origin"
+      })
+  }
+
+  const clear = () => {
+      data.paths = []
+      drawPaths()
+      saveHistory(data.paths)
+  }
+
+  const drawPaths = () => {
+      // delete everything
+      data.ctx.clearRect(0,0,data.canvas.width,data.canvas.height);
+      // draw all the paths in the paths array
+      data.paths.forEach(path => {
+          drawLine(path.start, path.end)
+      })
+  }
+
+  const undo = () => {
+      data.paths.pop()
+      drawPaths()
+  }
+
+  const swap = () => {
+      if (data.dots) {
+          document.getElementById("dots").style.backgroundImage = 'url("https://i.imgur.com/nDS4iSN.png")'
+      } else {
+        document.getElementById("dots").style.backgroundImage = 'url("https://i.imgur.com/iTksWOe.png")'
+      }
+      data.dots = !data.dots
+  }
+
+  prepCanvas();
+  prepHistory();
+</script>
+</html>

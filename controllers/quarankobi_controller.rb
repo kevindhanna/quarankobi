@@ -33,7 +33,7 @@ class QuaranKobiController < Sinatra::Base
       difference = TimeDifference.between(now, @user.reached).in_seconds
     end
 
-    if difference > 16 && @user.completed && @user.day != 11
+    if difference > 16 && @user.completed && @user.day != 12
       @user.next
       Peep.save(@user)
       redirect '/'
@@ -73,6 +73,17 @@ class QuaranKobiController < Sinatra::Base
       day_10(@user, params['code'])
     when 11
       day_11(@user, params['code'])
+    when 12
+      if params['code']
+        code = params['code'].delete(" ").delete("/")
+      end
+
+      if code && (code == "-......" || code.downcase == "bs")
+        @user.complete
+        Peep.save(@user)
+      end
+
+      erb :day_12, locals: {completed: @user.completed, name: @user.name}
     else
       "Something is bad."
     end
