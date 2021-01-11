@@ -1,6 +1,5 @@
 require 'date'
 require 'time_difference'
-require "./controllers/helpers/auth"
 require_relative './helpers/day_2'
 require_relative './helpers/day_3'
 require_relative './helpers/day_5'
@@ -9,19 +8,8 @@ require_relative './helpers/day_7'
 require_relative './helpers/day_10'
 require_relative './helpers/day_11'
 
-class QuaranKobiController < Sinatra::Base
+class QuaranKobiController < BaseController
   include Day2, Day3, Day5, Day6, Day7, Day10, Day11
-  # enable :sessions
-  use Rack::Session::Cookie, :key => 'rack.session',
-                            :domain => ENV['COOKIE_DOMAIN'],
-                            :expire_after => 2592000, # In seconds
-                            :secret => ENV['SESSION_SECRET']
-  use Auth
-
-  before do
-    @user, = request.env.values_at :user
-    session['uuid'] = @user.id
-  end
 
   get '/' do
     now = DateTime.now
@@ -89,7 +77,8 @@ class QuaranKobiController < Sinatra::Base
     end
   end
 
-  get '/*' do
-    erb :not_found
+  get '/quarankobi' do
+    send_file File.join(settings.public_folder, "/quarankobi.html")
   end
+
 end

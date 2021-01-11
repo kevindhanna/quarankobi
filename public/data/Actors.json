@@ -1,0 +1,7 @@
+[
+null,
+{"id":1,"battlerName":"kobi_3","characterIndex":0,"characterName":"kobi_1","classId":1,"equips":[0,0,0,0,80],"faceIndex":0,"faceName":"kobi","traits":[{"code":31,"dataId":1,"value":1},{"code":41,"dataId":2,"value":1}],"initialLevel":3,"maxLevel":99,"name":"Kobi","nickname":"Obiwan","note":"","profile":""},
+{"id":2,"battlerName":"","characterIndex":1,"characterName":"Monster","classId":5,"equips":[0,0,0,0,0],"faceIndex":1,"faceName":"Monster","traits":[{"code":13,"dataId":4,"value":1},{"code":31,"dataId":1,"value":1},{"code":41,"dataId":2,"value":1},{"code":43,"dataId":30,"value":1}],"initialLevel":6,"maxLevel":99,"name":"Scary Terry","nickname":"Tezza","note":"","profile":""},
+{"id":3,"battlerName":"SF_Actor1_7","characterIndex":6,"characterName":"SF_Actor1","classId":2,"equips":[0,0,7,0,0],"faceIndex":6,"faceName":"SF_Actor1","traits":[],"initialLevel":10,"maxLevel":99,"name":"Barry the Receptionist","nickname":"","note":"","profile":""},
+{"id":4,"battlerName":"lauren_2","characterIndex":0,"characterName":"lauren_1","classId":3,"equips":[11,43,70,23,86],"faceIndex":0,"faceName":"Lauren","traits":[{"code":41,"dataId":1,"value":1},{"code":43,"dataId":58,"value":1},{"code":43,"dataId":145,"value":1}],"initialLevel":20,"maxLevel":99,"name":"Lauren","nickname":"","note":"","profile":""}
+]

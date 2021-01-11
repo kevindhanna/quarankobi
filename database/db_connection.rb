@@ -19,10 +19,12 @@ class DbConnection
     rescue Mysql2::Error => e
       #sql is slow
       if e.message.include? "This connection is in use by"
+        puts "here";
         sleep(1.0/24.0)
         query(sql)
+      else
+        raise e
       end
-      raise e
     end
   end
 

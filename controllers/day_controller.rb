@@ -1,4 +1,3 @@
-require_relative './helpers/auth'
 require_relative './helpers/day_2'
 require_relative './helpers/day_3'
 require_relative './helpers/day_5'
@@ -7,19 +6,8 @@ require_relative './helpers/day_7'
 require_relative './helpers/day_10'
 require_relative './helpers/day_11'
 
-class DayController < Sinatra::Base
+class DayController < BaseController
   include Day2, Day3, Day5, Day6, Day7, Day10, Day11
-  # enable :sessions
-  use Rack::Session::Cookie, :key => 'rack.session',
-                            :domain => ENV['COOKIE_DOMAIN'],
-                            :expire_after => 2592000, # In seconds
-                            :secret => ENV['SESSION_SECRET']
-  use Auth
-
-  before do
-    @user, = request.env.values_at :user
-    session['uuid'] = @user.id
-  end
 
   get '/day_1' do
     haml :day_1, locals: {name: @user.name}
@@ -80,7 +68,7 @@ class DayController < Sinatra::Base
 
   put '/day_9' do
     current = @user.day_9_twister
-    # there are 3 tongue twisters in an array
+    # there are 5 tongue twisters in an array
     if current < 4
       @user.day_9_twister += 1
     else
@@ -117,4 +105,5 @@ class DayController < Sinatra::Base
 
     erb :day_12, locals: {completed: true, name: @user.name}
   end
+
 end

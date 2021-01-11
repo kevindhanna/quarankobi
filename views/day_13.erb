@@ -1,0 +1,72 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>QuaranKobi</title>
+  <style>
+    body {
+        background-color: aliceblue;
+        font-family: arial;
+    }
+    .form {
+        text-align: center
+    }
+    .content {
+        padding-left: 20vw;
+        padding-right: 20vw;
+        padding-top: 5vh;
+        height: 80vh;
+    }
+    iframe {
+        width: 100%;
+        height: 100%;
+    }
+    .home_link {
+        width: 10vw;
+        border-radius: 20px
+    }
+    .help {
+        background-color: yellow
+    }
+    .header {
+        width: 10vw;
+        float: left;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <a href="/">
+      <img class="home_link" src="homebutton.png">
+    </a>
+    <% if !name %>
+    <form action="/set_name" method="POST">
+      <label for="Name">Hey tell me your name</label>
+      <input id="Name" name="Name" type="text"/>
+      <br>
+      <input value="go on then" type="submit">
+    </form>
+    <% end %>
+    <div class="back_links">
+      <a href="/day_1">day 1</a></br>
+      <a href="/day_2">day 2</a></br>
+      <a href="/day_3">day 3</a></br>
+      <a href="/day_4">day 4</a></br>
+      <a href="/day_5">day 5</a></br>
+      <a href="/day_6">day 6</a></br>
+      <a href="/day_7">day 7</a></br>
+      <a href="/day_8">day 8</a></br>
+      <a href="/day_9">day 9</a></br>
+      <a href="/day_10">day 10</a></br>
+      <a href="/day_11">day 11</a></br>
+      <a href="/day_12">day 12</a></br>
+      <a class="help" href="mailto:helpmequarankobi@hotmail.com">help!</a></br>
+    </div>
+  </div>
+  <div class="content">
+    <iframe src="/quarankobi/index.html">
+  </div>
+</body>
+</html>

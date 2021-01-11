@@ -1,18 +1,4 @@
-require "./controllers/helpers/auth"
-
-class AdminController < Sinatra::Base
-  # enable :sessions
-  use Rack::Session::Cookie, :key => 'rack.session',
-                            :domain => ENV['COOKIE_DOMAIN'],
-                            :expire_after => 2592000, # In seconds
-                            :secret => ENV['SESSION_SECRET']
-  use Auth
-
-  before do
-    @user, = request.env.values_at :user
-    session['uuid'] = @user.id
-  end
-
+class AdminController < BaseController
   get '/reset' do
     DB.reset
     "DONE"
