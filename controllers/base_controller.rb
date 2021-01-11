@@ -1,11 +1,11 @@
 require "./controllers/helpers/auth"
 
 class BaseController < Sinatra::Base
-    # if ENV['RACK_ENV'] == "production"
+    if ENV['RACK_ENV'] == "production"
         set :environment, :production
-    # else
-        # set :environment, :development
-    # end
+    else
+        set :environment, :development
+    end
     configure :production, :development do
         puts File.dirname(__FILE__)
         enable  :logging
@@ -26,17 +26,12 @@ class BaseController < Sinatra::Base
 
     before do
         @user, = request.env.values_at :user
-        session['uuid'] = @user.id
+        if @user
+            session['uuid'] = @user.id
+        end
     end
 
     error 404 do
-        puts "NOT HERE"
         erb :not_found
-    end
-
-    error 500 do
-        puts "ERROR"
-        puts env['sinatra.error']
-        env['rack.errors'].class
     end
 end

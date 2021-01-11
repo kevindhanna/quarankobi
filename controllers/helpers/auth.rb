@@ -73,7 +73,6 @@ class Auth
   def whitelisted?(uri)
     WHITELIST.each do |path|
       if uri.start_with? path
-        puts "WHITELISTING #{uri}"
         return true
       end
     end

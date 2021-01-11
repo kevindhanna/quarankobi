@@ -21,7 +21,7 @@ class QuaranKobiController < BaseController
       difference = TimeDifference.between(now, @user.reached).in_seconds
     end
 
-    if difference > 16 && @user.completed && @user.day != 12
+    if difference > 16 && @user.completed && @user.day != 13
       @user.next
       Peep.save(@user)
       redirect '/'
@@ -72,13 +72,11 @@ class QuaranKobiController < BaseController
       end
 
       erb :day_12, locals: {completed: @user.completed, name: @user.name}
+    when 13
+      erb :day_13, locals: {name: @user.name}
     else
       "Something is bad."
     end
-  end
-
-  get '/quarankobi' do
-    send_file File.join(settings.public_folder, "/quarankobi.html")
   end
 
 end
