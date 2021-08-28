@@ -3,30 +3,30 @@ require 'securerandom'
 class Peep
   TABLE = "peeps"
   DEFAULT_DAY_11_HISTORY = "{\"history\": []}"
-  @@repository = DB
+  @@repository = {}
 
   def self.find_by_id(id)
-    params = @@repository.find(TABLE, "id", self.stringify(id))
-    if params == nil
+    # params = @@repository.find(TABLE, "id", self.stringify(id))
+    # if params == nil
       raise PeepNotFound.new
-    end
-    Peep.new(**params)
+    # end
+    # Peep.new(**params)
   end
 
   def self.find_by_ip(ip)
-    params = @@repository.find(TABLE, "ip", self.stringify(ip))
-    if params == nil
+    # params = @@repository.find(TABLE, "ip", self.stringify(ip))
+    # if params == nil
       raise PeepNotFound.new
-    end
-    Peep.new(**params)
+    # end
+    # Peep.new(**params)
   end
 
   def self.find_by_user_agent(ua)
-    params = @@repository.find(TABLE, "user_agent", self.stringify(ua))
-    if params == nil
+    # params = @@repository.find(TABLE, "user_agent", self.stringify(ua))
+    # if params == nil
       raise PeepNotFound.new
-    end
-    Peep.new(**params)
+    # end
+    # Peep.new(**params)
   end
 
   def self.create(ip, user_agent)
@@ -49,7 +49,7 @@ class Peep
       find_by_id(peep.id)
       @@repository.update(TABLE, ["id", self.stringify(peep.id)], props)
     rescue PeepNotFound
-      @@repository.insert(TABLE, props)
+      @@repository[peep.name] = peep
     end
   end
 

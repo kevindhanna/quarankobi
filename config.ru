@@ -1,6 +1,6 @@
 require 'dotenv/load'
 require 'sinatra'
-require "./database/db"
+# require "./database/db"
 require "./models/peep"
 require "./controllers/base_controller"
 require "./controllers/admin_controller"

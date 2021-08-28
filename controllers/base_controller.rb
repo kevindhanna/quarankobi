@@ -9,7 +9,7 @@ class BaseController < Sinatra::Base
     configure :production, :development do
         puts File.dirname(__FILE__)
         enable  :logging
-        set     :session_secret,  ENV.fetch('SESSION_SECRET')
+        # set     :session_secret,  ENV.fetch('SESSION_SECRET')
         set     :static,          true
         set     :root,            File.dirname(__FILE__)
         set     :public_folder,   Proc.new { File.join(root, "../public") }
